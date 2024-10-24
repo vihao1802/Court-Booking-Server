@@ -1,7 +1,7 @@
 package com.court_booking_project.court_booking_server.controller;
 
 import com.court_booking_project.court_booking_server.entity.Role;
-import com.court_booking_project.court_booking_server.service.RoleService;
+import com.court_booking_project.court_booking_server.service.Interfaces.IRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,9 +13,9 @@ import java.util.List;
 @RequestMapping("/api/v1/")
 public class RoleController {
     @Autowired
-    private final RoleService roleService;
+    private final IRoleService roleService;
 
-    public RoleController(RoleService roleService) {
+    public RoleController(IRoleService roleService) {
         this.roleService = roleService;
     }
 
