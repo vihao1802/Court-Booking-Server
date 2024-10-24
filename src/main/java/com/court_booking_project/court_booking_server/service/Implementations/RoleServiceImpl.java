@@ -1,5 +1,8 @@
 package com.court_booking_project.court_booking_server.service.Implementations;
 
+import com.court_booking_project.court_booking_server.Mapper.RoleMapper;
+import com.court_booking_project.court_booking_server.dto.Request.CreateRoleRequest;
+import com.court_booking_project.court_booking_server.dto.Response.RoleResponse;
 import com.court_booking_project.court_booking_server.entity.Role;
 import com.court_booking_project.court_booking_server.repository.IRoleRepository;
 import com.court_booking_project.court_booking_server.service.Interfaces.IRoleService;
@@ -11,13 +14,16 @@ import java.util.List;
 public class RoleServiceImpl implements IRoleService {
 
     private final IRoleRepository roleRepository;
+    private final RoleMapper roleMapper;
+
     @Override
     public Role getByName(String roleName) {
         return roleRepository.findByRoleName(roleName);
     }
 
-    public RoleServiceImpl(IRoleRepository roleRepository) {
+    public RoleServiceImpl(IRoleRepository roleRepository, RoleMapper roleMapper) {
         this.roleRepository = roleRepository;
+        this.roleMapper = roleMapper;
     }
 
     @Override
@@ -31,7 +37,9 @@ public class RoleServiceImpl implements IRoleService {
     }
 
     @Override
-    public void add(Role role) {
-        roleRepository.save(role);
+    public RoleResponse add(CreateRoleRequest createRoleRequest) {
+        Role newRole = roleMapper.toRole(createRoleRequest);
+        roleRepository.save(newRole);
+        return roleMapper.toRoleResponse(newRole);
     }
 }

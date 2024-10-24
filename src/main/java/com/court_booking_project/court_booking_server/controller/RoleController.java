@@ -1,11 +1,11 @@
 package com.court_booking_project.court_booking_server.controller;
 
+import com.court_booking_project.court_booking_server.dto.Request.CreateRoleRequest;
+import com.court_booking_project.court_booking_server.dto.Response.RoleResponse;
 import com.court_booking_project.court_booking_server.entity.Role;
 import com.court_booking_project.court_booking_server.service.Interfaces.IRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -22,5 +22,9 @@ public class RoleController {
     @GetMapping("/roles")
     public List<Role> getAllUsers() {
         return roleService.getAll();
+    }
+    @PostMapping("/roles")
+    public RoleResponse addRole(@RequestBody CreateRoleRequest createRoleRequest) {
+        return roleService.add(createRoleRequest);
     }
 }
