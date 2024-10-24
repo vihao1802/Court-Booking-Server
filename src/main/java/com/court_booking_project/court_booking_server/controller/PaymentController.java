@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 public class PaymentController {
     ZaloPayService zalPayService;
 
-    @GetMapping("/{id}/zalo-pay")
+    @PostMapping("/{id}/zalo-pay")
     public ResponseEntity<?> createPaymentZaloPay( @PathVariable String id,@RequestBody ZaloPayRequestCreatePaymentDTO request) throws Exception {
         return ResponseEntity.status(HttpStatus.OK).body(zalPayService.createPaymentZaloPay(id,request));
     }
