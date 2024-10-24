@@ -1,53 +1,33 @@
 package com.court_booking_project.court_booking_server.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.UuidGenerator;
 
-import java.util.UUID;
+import java.util.List;
 
-@Entity
+@Data // generates getters, setters, toString(), equals(), and hashCode() methods
+@Entity // a JPA entity will be mapped to a database table.
+@Builder // generates a builder pattern for the class Ex: CourtType.builder().amount(1000).status("PAID").customer(customerObject).build();
 @Table( name = "court_types")
+@NoArgsConstructor // generates a no-arguments constructor
+@AllArgsConstructor // generates a constructor that includes all fields as parameters
+@FieldDefaults(level = AccessLevel.PRIVATE) // sets all fields in the class to have private access level
 public class CourtType {
 
     @Id
     @UuidGenerator
-    private String id;
-    private String courtTypeName;
-    private int isDisabled;
+    @Column(name = "id", nullable = false)
+    String id;
 
-    public CourtType() {
+    @Column(name = "court_type_name", nullable = false)
+    String courtTypeName;
 
-    }
+    @Column(name = "is_disabled", nullable = false)
+    @Builder.Default
+    int isDisabled = 0;
 
-    public CourtType(String courtTypeName, int isDisabled) {
-        this.id = UUID.randomUUID().toString();
-        this.courtTypeName = courtTypeName;
-        this.isDisabled = isDisabled;
-    }
-
-    public int getIsDisabled() {
-        return isDisabled;
-    }
-
-    public void setIsDisabled(int isDisabled) {
-        this.isDisabled = isDisabled;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getCourtTypeName() {
-        return courtTypeName;
-    }
-
-    public void setCourtTypeName(String courtTypeName) {
-        this.courtTypeName = courtTypeName;
-    }
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "court_type")
+    List<Court> courts;
 }
