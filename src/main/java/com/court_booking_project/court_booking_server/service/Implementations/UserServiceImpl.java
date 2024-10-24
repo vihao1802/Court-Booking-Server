@@ -16,6 +16,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -36,8 +37,9 @@ public class UserServiceImpl implements IUserService {
     public UserResponse add(CreateUserRequest createUserRequest) {
         User user = userMapper.toUser(createUserRequest);
 
+        user.setCreatedAt(Date.from(java.time.Instant.now()));
 
-        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         Role userRole = roleServiceImpl.getByName(PredefineRole.USER_ROLE);
@@ -62,6 +64,12 @@ public class UserServiceImpl implements IUserService {
     public User getById(String id) {
         return userRepository.findById(id).get();
     }
+
+    @Override
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
+
 
     @Override
     public User update(String id, User user) {
