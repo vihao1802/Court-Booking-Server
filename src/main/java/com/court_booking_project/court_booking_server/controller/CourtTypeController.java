@@ -13,7 +13,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("${spring.application.api-prefix}/court-types/")
+@RequestMapping("${spring.application.api-prefix}/court-types")
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class CourtTypeController {
     CourtTypeServiceImpl courtTypeService;
