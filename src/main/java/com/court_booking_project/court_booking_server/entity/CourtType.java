@@ -28,6 +28,6 @@ public class CourtType {
     @Builder.Default
     int isDisabled = 0;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "court_type")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "courtType")
     List<Court> courts;
 }
