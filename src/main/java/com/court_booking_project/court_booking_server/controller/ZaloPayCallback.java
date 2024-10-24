@@ -1,7 +1,7 @@
 package com.court_booking_project.court_booking_server.controller;
 
 import com.court_booking_project.court_booking_server.config.ZaloPayConfig;
-import com.court_booking_project.court_booking_server.dto.ZaloPayCallBackDTO;
+import com.court_booking_project.court_booking_server.dto.Request.zalopay.ZaloPayCallBackDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.json.JSONObject; // https://mvnrepository.com/artifact/org.json/json
