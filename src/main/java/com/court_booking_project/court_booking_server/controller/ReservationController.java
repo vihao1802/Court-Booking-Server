@@ -1,22 +1,26 @@
 package com.court_booking_project.court_booking_server.controller;
 
+import com.court_booking_project.court_booking_server.dto.Request.momo.MomoCallbackDTO;
 import com.court_booking_project.court_booking_server.dto.Request.momo.MomoCreatePaymentDTO;
+import com.court_booking_project.court_booking_server.dto.Request.momo.MomoRequestCreatePaymentDTO;
 import com.court_booking_project.court_booking_server.dto.Request.zalopay.ZaloPayRequestCreatePaymentDTO;
 import com.court_booking_project.court_booking_server.dto.Request.zalopay.ZaloPayCallBackDTO;
 import com.court_booking_project.court_booking_server.service.Implementations.ZaloPayService;
 import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.court_booking_project.court_booking_server.service.ReservationService;
+import com.court_booking_project.court_booking_server.service.Implementations.ReservationServiceImpl;
 
 
 @RestController
-@RequestMapping("${spring.application.api-prefix}/reservation")
+@RequiredArgsConstructor
+@RequestMapping("${spring.application.api-prefix}/reservations")
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class ReservationController {
-    ReservationService reservationService;
+    ReservationServiceImpl reservationService;
     ZaloPayService zalPayService;
 
     @PostMapping("/{id}/payment/momo")
@@ -32,7 +36,7 @@ public class ReservationController {
     }
 
 
-    @GetMapping("/{id}/zalo-pay")
+    @PostMapping("/{id}/payment/zalo-pay")
     public ResponseEntity<?> createPaymentZaloPay( @PathVariable String id,@RequestBody ZaloPayRequestCreatePaymentDTO request) throws Exception {
         return ResponseEntity.status(HttpStatus.OK).body(zalPayService.createPaymentZaloPay(id,request));
     }
