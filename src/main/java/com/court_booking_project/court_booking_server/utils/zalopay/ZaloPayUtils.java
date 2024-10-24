@@ -1,4 +1,4 @@
-package com.court_booking_project.court_booking_server.utils;
+package com.court_booking_project.court_booking_server.utils.zalopay;
 
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
