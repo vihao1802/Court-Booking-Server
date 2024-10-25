@@ -1,7 +1,7 @@
 package com.court_booking_project.court_booking_server.controller;
 
-import com.court_booking_project.court_booking_server.dto.request.CreateUserRequest;
-import com.court_booking_project.court_booking_server.dto.response.UserResponse;
+import com.court_booking_project.court_booking_server.dto.request.authentication.CreateUserRequest;
+import com.court_booking_project.court_booking_server.dto.response.authentication.UserResponse;
 import com.court_booking_project.court_booking_server.entity.User;
 import com.court_booking_project.court_booking_server.service.interfaces.IUserService;
 import jakarta.validation.Valid;

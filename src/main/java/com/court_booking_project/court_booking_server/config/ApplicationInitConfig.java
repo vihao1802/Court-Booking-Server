@@ -1,18 +1,13 @@
 package com.court_booking_project.court_booking_server.config;
 
-import com.court_booking_project.court_booking_server.dto.request.CreateRoleRequest;
-import com.court_booking_project.court_booking_server.dto.request.CreateUserRequest;
 import com.court_booking_project.court_booking_server.entity.Role;
 import com.court_booking_project.court_booking_server.entity.User;
 import com.court_booking_project.court_booking_server.repository.IRoleRepository;
 import com.court_booking_project.court_booking_server.repository.IUserRepository;
-import com.court_booking_project.court_booking_server.service.interfaces.IRoleService;
-import com.court_booking_project.court_booking_server.service.interfaces.IUserService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
