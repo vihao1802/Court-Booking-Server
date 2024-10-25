@@ -1,4 +1,4 @@
-package com.court_booking_project.court_booking_server.dto.Request.court_type;
+package com.court_booking_project.court_booking_server.dto.request.court_type;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -10,7 +10,6 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class UpdateCourtTypeRequest {
+public class CreateCourtTypeRequest {
     String courtTypeName;
-    int isDisabled;
 }

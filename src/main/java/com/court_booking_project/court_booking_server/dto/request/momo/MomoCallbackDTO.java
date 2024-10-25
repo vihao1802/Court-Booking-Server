@@ -1,4 +1,4 @@
-package com.court_booking_project.court_booking_server.dto.Request.momo;
+package com.court_booking_project.court_booking_server.dto.request.momo;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

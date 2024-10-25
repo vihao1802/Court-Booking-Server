@@ -1,4 +1,4 @@
-package com.court_booking_project.court_booking_server.dto.Request.court;
+package com.court_booking_project.court_booking_server.dto.request.court;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -10,7 +10,7 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class UpdateCourtRequest {
+public class CreateCourtRequest {
     String courtName;
     String courtDescription;
     String courtAddress;

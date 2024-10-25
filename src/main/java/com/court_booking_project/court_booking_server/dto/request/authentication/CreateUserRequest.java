@@ -1,4 +1,4 @@
-package com.court_booking_project.court_booking_server.dto.request;
+package com.court_booking_project.court_booking_server.dto.request.authentication;
 
 import jakarta.validation.constraints.*;
 import lombok.*;
