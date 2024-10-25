@@ -21,15 +21,15 @@ public class Reservation {
     private int reservationState;
     private Date createdAt;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "courtId", referencedColumnName = "id", nullable = false)
     private Court court;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userId", referencedColumnName = "id", nullable = false)
     private User user;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "paymentId",referencedColumnName = "id",nullable = false)
     private Payment payment;
 
