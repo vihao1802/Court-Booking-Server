@@ -1,8 +1,8 @@
 package com.court_booking_project.court_booking_server.controller;
 
 import com.court_booking_project.court_booking_server.dto.ZaloPayCallBackDTO;
-import com.court_booking_project.court_booking_server.dto.Request.ZaloPayRequestCreatePaymentDTO;
-import com.court_booking_project.court_booking_server.service.Implementations.ZaloPayService;
+import com.court_booking_project.court_booking_server.dto.request.ZaloPayRequestCreatePaymentDTO;
+import com.court_booking_project.court_booking_server.service.implementations.ZaloPayService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;

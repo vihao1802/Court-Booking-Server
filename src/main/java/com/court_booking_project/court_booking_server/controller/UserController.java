@@ -1,9 +1,9 @@
 package com.court_booking_project.court_booking_server.controller;
 
-import com.court_booking_project.court_booking_server.dto.Request.CreateUserRequest;
-import com.court_booking_project.court_booking_server.dto.Response.UserResponse;
+import com.court_booking_project.court_booking_server.dto.request.CreateUserRequest;
+import com.court_booking_project.court_booking_server.dto.response.UserResponse;
 import com.court_booking_project.court_booking_server.entity.User;
-import com.court_booking_project.court_booking_server.service.Interfaces.IUserService;
+import com.court_booking_project.court_booking_server.service.interfaces.IUserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

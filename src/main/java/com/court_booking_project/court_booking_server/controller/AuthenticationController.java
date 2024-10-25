@@ -1,12 +1,10 @@
 package com.court_booking_project.court_booking_server.controller;
 
-import com.court_booking_project.court_booking_server.dto.Request.IntrospectRequest;
-import com.court_booking_project.court_booking_server.dto.Request.LoginRequestDto;
-import com.court_booking_project.court_booking_server.dto.Response.AuthenticationResponse;
-import com.court_booking_project.court_booking_server.dto.Response.IntrospectResponse;
-import com.court_booking_project.court_booking_server.dto.Response.UserResponse;
-import com.court_booking_project.court_booking_server.service.Interfaces.IAuthenticationService;
-import com.court_booking_project.court_booking_server.service.Interfaces.IUserService;
+import com.court_booking_project.court_booking_server.dto.request.IntrospectRequest;
+import com.court_booking_project.court_booking_server.dto.request.LoginRequestDto;
+import com.court_booking_project.court_booking_server.dto.response.AuthenticationResponse;
+import com.court_booking_project.court_booking_server.dto.response.IntrospectResponse;
+import com.court_booking_project.court_booking_server.service.interfaces.IAuthenticationService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
