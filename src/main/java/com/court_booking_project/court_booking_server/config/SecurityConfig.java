@@ -32,7 +32,8 @@ public class SecurityConfig {
     };
 
     private final String[] ADMIN_ONLY_ENDPOINT = {
-            "/api/v1/users"
+            "/api/v1/users",
+            "/api/v1/roles"
     };
 
     @Bean

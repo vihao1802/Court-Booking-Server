@@ -1,9 +1,9 @@
 package com.court_booking_project.court_booking_server.controller;
 
-import com.court_booking_project.court_booking_server.dto.Request.court_type.CreateCourtTypeRequest;
-import com.court_booking_project.court_booking_server.dto.Request.court_type.UpdateCourtTypeRequest;
-import com.court_booking_project.court_booking_server.dto.Response.CourtTypeResponse;
-import com.court_booking_project.court_booking_server.service.Implementations.CourtTypeServiceImpl;
+import com.court_booking_project.court_booking_server.dto.request.court_type.CreateCourtTypeRequest;
+import com.court_booking_project.court_booking_server.dto.request.court_type.UpdateCourtTypeRequest;
+import com.court_booking_project.court_booking_server.dto.response.CourtTypeResponse;
+import com.court_booking_project.court_booking_server.service.implementations.CourtTypeServiceImpl;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;

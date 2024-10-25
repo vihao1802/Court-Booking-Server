@@ -1,8 +1,8 @@
-package com.court_booking_project.court_booking_server.service.Implementations;
+package com.court_booking_project.court_booking_server.service.implementations;
 
 import com.court_booking_project.court_booking_server.config.ZaloPayConfig;
-import com.court_booking_project.court_booking_server.dto.Request.zalopay.ZaloPayCallBackDTO;
-import com.court_booking_project.court_booking_server.dto.Request.zalopay.ZaloPayRequestCreatePaymentDTO;
+import com.court_booking_project.court_booking_server.dto.request.zalopay.ZaloPayCallBackDTO;
+import com.court_booking_project.court_booking_server.dto.request.zalopay.ZaloPayRequestCreatePaymentDTO;
 import com.court_booking_project.court_booking_server.utils.zalopay.ZaloPayUtils;
 import com.court_booking_project.court_booking_server.utils.zalopay.crypto.HMACUtil;
 
