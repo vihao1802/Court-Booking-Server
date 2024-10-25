@@ -1,8 +1,5 @@
-<<<<<<<< HEAD:src/main/java/com/court_booking_project/court_booking_server/dto/request/ZaloPayRequestCreatePaymentDTO.java
-package com.court_booking_project.court_booking_server.dto.request;
-========
-package com.court_booking_project.court_booking_server.dto.Request.zalopay;
->>>>>>>> main:src/main/java/com/court_booking_project/court_booking_server/dto/Request/zalopay/ZaloPayCallBackDTO.java
+
+package com.court_booking_project.court_booking_server.dto.request.zalopay;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
