@@ -5,14 +5,14 @@ import com.court_booking_project.court_booking_server.dto.Request.momo.MomoCreat
 import com.court_booking_project.court_booking_server.dto.Request.momo.MomoRequestCreatePaymentDTO;
 import com.court_booking_project.court_booking_server.dto.Request.zalopay.ZaloPayRequestCreatePaymentDTO;
 import com.court_booking_project.court_booking_server.dto.Request.zalopay.ZaloPayCallBackDTO;
-import com.court_booking_project.court_booking_server.service.Implementations.ZaloPayService;
+import com.court_booking_project.court_booking_server.service.implementations.ZaloPayService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.court_booking_project.court_booking_server.service.Implementations.ReservationServiceImpl;
+import com.court_booking_project.court_booking_server.service.implementations.ReservationServiceImpl;
 
 
 @RestController

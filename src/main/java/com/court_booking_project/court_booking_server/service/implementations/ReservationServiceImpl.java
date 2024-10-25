@@ -1,9 +1,9 @@
-package com.court_booking_project.court_booking_server.service.Implementations;
+package com.court_booking_project.court_booking_server.service.implementations;
 
 import com.court_booking_project.court_booking_server.config.MomoSettings;
 import com.court_booking_project.court_booking_server.entity.Reservation;
 import com.court_booking_project.court_booking_server.repository.IReservationRepository;
-import com.court_booking_project.court_booking_server.service.Interfaces.IReservationService;
+import com.court_booking_project.court_booking_server.service.interfaces.IReservationService;
 import com.court_booking_project.court_booking_server.dto.Request.momo.MomoCreatePaymentDTO;
 import com.court_booking_project.court_booking_server.dto.Request.momo.MomoRequestCreatePaymentDTO;
 import com.court_booking_project.court_booking_server.dto.Request.momo.MomoCallbackDTO;

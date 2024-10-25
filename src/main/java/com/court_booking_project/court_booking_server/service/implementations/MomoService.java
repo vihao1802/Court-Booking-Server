@@ -1,4 +1,4 @@
-package com.court_booking_project.court_booking_server.service.Implementations;
+package com.court_booking_project.court_booking_server.service.implementations;
 
 import com.court_booking_project.court_booking_server.config.MomoSettings;
 import com.court_booking_project.court_booking_server.dto.Request.momo.ExtraData;
