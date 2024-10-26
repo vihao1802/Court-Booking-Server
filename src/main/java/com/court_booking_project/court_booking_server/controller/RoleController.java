@@ -1,6 +1,6 @@
 package com.court_booking_project.court_booking_server.controller;
 
-import com.court_booking_project.court_booking_server.dto.temp_request.role.CreateRoleRequest;
+import com.court_booking_project.court_booking_server.dto.request.role.CreateRoleRequest;
 import com.court_booking_project.court_booking_server.dto.response.role.RoleResponse;
 import com.court_booking_project.court_booking_server.entity.Role;
 import com.court_booking_project.court_booking_server.service.interfaces.IRoleService;
