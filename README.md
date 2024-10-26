@@ -30,6 +30,8 @@
 
 ## 🎯 Getting Started
 
+- You can view this frontend website repo at: <a href="https://github.com/vihao1802/Court-Booking-Client" target="_blank">Court Booking Client</a>
+
 ### 💎 Prerequisites
 - You should create a `main` directory to wrap 2 repo (client and server) of this system
 - <a href="http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html" target="_blank">JDK >= 17</a>
@@ -37,7 +39,7 @@
 
 ### ⚙️ Installation
 
-1. Clone the repo in the `main` directory 
+1. Clone the repo in the `main` directory
 
 ```sh
 git clone https://github.com/vihao1802/Court-Booking-Client.git
@@ -58,7 +60,7 @@ spring.jpa.hibernate.ddl-auto=update
 spring.jpa.show-sql=true
 spring.application.api-prefix=/api/v1
 
-# ZALOPAY (Learn more about ZaloPay Developer: https://docs.zalopay.vn/v2/general/overview.html)
+# ZALOPAY ( Learn more about ZaloPay Developer at: https://docs.zalopay.vn/v2/general/overview.html )
 zalopay.app_id=2553
 zalopay.key1=PcY4iZIKFCIdgZvA6ueMcMHHUbRLYjPL
 zalopay.key2=kLtgPl8HHhfvMuDHPwKfgfsY4Ydm9eIz
@@ -73,7 +75,7 @@ jwt.expirationTime=
 
 ## 🚀 Usage
 
-### Client (Run in termnial):
+### Client ( Run in termnial ):
 
 - From `main` directory
 
@@ -94,9 +96,9 @@ npm run dev
 ## ✨ Code Contributors
 
 - This project exists thanks to all the people who contribute.
-<a href="https://github.com/vihao1802/Court-Booking-Server/graphs/contributors">
+  <a href="https://github.com/vihao1802/Court-Booking-Server/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=vihao1802/Court-Booking-Server" />
-</a>
+  </a>
 
 Made with [contrib.rocks](https://contrib.rocks).
 
