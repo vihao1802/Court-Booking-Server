@@ -1,5 +1,6 @@
 package com.court_booking_project.court_booking_server.config;
 
+import com.court_booking_project.court_booking_server.constant.PredefineRole;
 import com.court_booking_project.court_booking_server.entity.Role;
 import com.court_booking_project.court_booking_server.entity.User;
 import com.court_booking_project.court_booking_server.repository.IRoleRepository;
@@ -25,11 +26,11 @@ public class ApplicationInitConfig {
     ApplicationRunner init(IRoleRepository roleRepository, IUserRepository userRepository) {
         return args -> {
             if (roleRepository.findAll().isEmpty()) {
-                roleRepository.save(new Role("ADMIN"));
-                roleRepository.save(new Role("USER"));
+                roleRepository.save(new Role(PredefineRole.ADMIN_ROLE));
+                roleRepository.save(new Role(PredefineRole.USER_ROLE));
             }
 
-            if(userRepository.findByEmail("admin@admin.com") == null) {
+            if(userRepository.findByEmail("admin@admin.com").isEmpty()) {
                 User newAdmin = User.builder()
                         .userName("admin")
                         .email("admin@admin.com")

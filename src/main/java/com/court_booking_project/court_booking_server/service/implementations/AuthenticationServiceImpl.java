@@ -7,8 +7,8 @@ import com.court_booking_project.court_booking_server.dto.request.authentication
 import com.court_booking_project.court_booking_server.dto.request.authentication.LoginRequestDto;
 import com.court_booking_project.court_booking_server.dto.response.authentication.AuthenticationResponse;
 import com.court_booking_project.court_booking_server.dto.response.authentication.IntrospectResponse;
+import com.court_booking_project.court_booking_server.repository.IUserRepository;
 import com.court_booking_project.court_booking_server.service.interfaces.IAuthenticationService;
-import com.court_booking_project.court_booking_server.service.interfaces.IUserService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -32,7 +32,7 @@ import com.nimbusds.jwt.*;
 @Slf4j
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class AuthenticationServiceImpl implements IAuthenticationService {
-    IUserService userService;
+    IUserRepository userRepository;
     PasswordEncoder passwordEncoder;
     @NonFinal
     @Value("${jwt.secretSigningKey}")
@@ -44,16 +44,16 @@ public class AuthenticationServiceImpl implements IAuthenticationService {
 
 
     public AuthenticationResponse login(LoginRequestDto loginRequestDto) {
-        var user = userService.findByEmail(loginRequestDto.getEmail());
-        if(user == null)
+        var user = userRepository.findByEmail(loginRequestDto.getEmail());
+        if(user.isEmpty())
             throw new AppException(ErrorCode.USER_NOT_EXISTED);
 
-        boolean verifyPassword = passwordEncoder.matches(loginRequestDto.getPassword(),user.getPassword());
+        boolean verifyPassword = passwordEncoder.matches(loginRequestDto.getPassword(),user.get().getPassword());
 
         if(!verifyPassword)
             throw new AppException(ErrorCode.INVALID_PASSWORD);
 
-        var token = generateToken(user);
+        var token = generateToken(user.get());
 
         return AuthenticationResponse.builder()
                 .token(token)

@@ -18,14 +18,14 @@ public enum ErrorCode {
     INVALID_TOKEN(1008, "Invalid token", HttpStatus.BAD_REQUEST),
     ;
 
-    ErrorCode(int code, String message, HttpStatusCode statusCode) {
+    ErrorCode(int code, String message, HttpStatusCode httpStatusCode) {
         this.code = code;
         this.message = message;
-        this.statusCode = statusCode;
+        this.httpStatusCode = httpStatusCode;
     }
 
 
     private final int code;
     private final String message;
-    private final HttpStatusCode statusCode;
+    private final HttpStatusCode httpStatusCode;
 }

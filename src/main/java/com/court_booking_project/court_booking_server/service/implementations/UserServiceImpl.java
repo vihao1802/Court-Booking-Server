@@ -12,6 +12,8 @@ import com.court_booking_project.court_booking_server.repository.IUserRepository
 import com.court_booking_project.court_booking_server.service.interfaces.IUserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -61,23 +63,47 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public User getById(String id) {
-        return userRepository.findById(id).get();
+    public UserResponse getMyInfo() {
+        var context = SecurityContextHolder.getContext();
+
+        String email = context.getAuthentication().getName();
+        log.info("Email: {}", email);
+        var user = userRepository.findByEmail(email);
+
+        if(user.isEmpty())
+            throw new AppException(ErrorCode.UNAUTHORIZED);
+
+        return userMapper.toUserResponse(user.get());
     }
 
     @Override
-    public User findByEmail(String email) {
-        return userRepository.findByEmail(email);
+    public UserResponse getById(String id) {
+        var user = userRepository.findById(id);
+        if(user.isEmpty())
+            throw new AppException(ErrorCode.USER_NOT_EXISTED);
+
+        return userMapper.toUserResponse(user.get()) ;
+    }
+
+    @Override
+    public UserResponse findByEmail(String email) {
+        var user = userRepository.findByEmail(email);
+        if(user.isEmpty())
+            throw new AppException(ErrorCode.USER_NOT_EXISTED);
+
+        return userMapper.toUserResponse(user.get()) ;
     }
 
 
     @Override
-    public User update(String id, User user) {
-        User userEntity =
-                userRepository.findById(id).get();
+    public UserResponse update(String id, User user) {
+        var userEntity = userRepository.findById(id);
 
-        userRepository.save(userEntity);
-        return user;
+        if (userEntity.isEmpty())
+            throw new AppException(ErrorCode.USER_NOT_EXISTED);
+
+        userRepository.save(userEntity.get());
+        return userMapper.toUserResponse(userEntity.get());
     }
 
 }

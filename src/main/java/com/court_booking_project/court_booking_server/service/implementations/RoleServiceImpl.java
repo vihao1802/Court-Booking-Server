@@ -6,6 +6,7 @@ import com.court_booking_project.court_booking_server.dto.response.role.RoleResp
 import com.court_booking_project.court_booking_server.entity.Role;
 import com.court_booking_project.court_booking_server.repository.IRoleRepository;
 import com.court_booking_project.court_booking_server.service.interfaces.IRoleService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
