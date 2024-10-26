@@ -6,6 +6,7 @@ import com.court_booking_project.court_booking_server.dto.request.momo.MomoReque
 import com.court_booking_project.court_booking_server.dto.request.zalopay.ZaloPayRequestCreatePaymentDTO;
 import com.court_booking_project.court_booking_server.dto.request.zalopay.ZaloPayCallBackDTO;
 import com.court_booking_project.court_booking_server.service.implementations.ZaloPayService;
+import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -37,7 +38,7 @@ public class ReservationController {
 
 
     @PostMapping("/{id}/payment/zalo-pay")
-    public ResponseEntity<?> createPaymentZaloPay( @PathVariable String id,@RequestBody ZaloPayRequestCreatePaymentDTO request) throws Exception {
+    public ResponseEntity<?> createPaymentZaloPay( @PathVariable String id,@RequestBody @Valid ZaloPayRequestCreatePaymentDTO request) throws Exception {
         return ResponseEntity.status(HttpStatus.OK).body(zalPayService.createPaymentZaloPay(id,request));
     }
 

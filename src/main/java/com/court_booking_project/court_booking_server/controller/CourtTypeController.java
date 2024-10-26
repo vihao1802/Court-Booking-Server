@@ -5,6 +5,7 @@ import com.court_booking_project.court_booking_server.dto.request.court_type.Upd
 import com.court_booking_project.court_booking_server.dto.response.courtType.CourtTypeResponse;
 
 import com.court_booking_project.court_booking_server.service.implementations.CourtTypeServiceImpl;
+import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -30,12 +31,12 @@ public class CourtTypeController {
     }
 
     @PostMapping
-    public CourtTypeResponse createCourtType(@RequestBody CreateCourtTypeRequest request) {
+    public CourtTypeResponse createCourtType(@RequestBody @Valid CreateCourtTypeRequest request) {
         return courtTypeService.add(request);
     }
 
     @PutMapping("/{id}")
-    public CourtTypeResponse updateCourtType(@PathVariable String id, @RequestBody UpdateCourtTypeRequest request) {
+    public CourtTypeResponse updateCourtType(@PathVariable String id, @RequestBody @Valid UpdateCourtTypeRequest request) {
         return courtTypeService.update(id, request);
     }
 
