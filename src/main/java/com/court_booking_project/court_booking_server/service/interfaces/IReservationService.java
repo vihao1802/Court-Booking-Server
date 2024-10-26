@@ -1,8 +1,8 @@
 package com.court_booking_project.court_booking_server.service.interfaces;
 
-import com.court_booking_project.court_booking_server.dto.temp_request.momo.MomoCallbackDTO;
-import com.court_booking_project.court_booking_server.dto.temp_request.momo.MomoCreatePaymentDTO;
-import com.court_booking_project.court_booking_server.dto.temp_request.momo.MomoRequestCreatePaymentDTO;
+import com.court_booking_project.court_booking_server.dto.request.momo.MomoCallbackDTO;
+import com.court_booking_project.court_booking_server.dto.request.momo.MomoCreatePaymentDTO;
+import com.court_booking_project.court_booking_server.dto.request.momo.MomoRequestCreatePaymentDTO;
 import com.court_booking_project.court_booking_server.entity.Reservation;
 
 import java.util.List;
