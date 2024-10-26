@@ -1,4 +1,4 @@
-package com.court_booking_project.court_booking_server.dto.request.reservation;
+package com.court_booking_project.court_booking_server.dto.temp_request.reservation;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;

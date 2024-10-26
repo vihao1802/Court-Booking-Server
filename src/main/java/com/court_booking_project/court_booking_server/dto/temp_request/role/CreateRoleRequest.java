@@ -1,4 +1,4 @@
-package com.court_booking_project.court_booking_server.dto.request.role;
+package com.court_booking_project.court_booking_server.dto.temp_request.role;
 
 import lombok.*;
 

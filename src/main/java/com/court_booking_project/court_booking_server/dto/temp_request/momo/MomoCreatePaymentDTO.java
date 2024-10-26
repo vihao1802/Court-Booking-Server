@@ -1,4 +1,4 @@
-package com.court_booking_project.court_booking_server.dto.request.momo;
+package com.court_booking_project.court_booking_server.dto.temp_request.momo;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;

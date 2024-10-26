@@ -1,4 +1,4 @@
-package com.court_booking_project.court_booking_server.dto.request.court_type;
+package com.court_booking_project.court_booking_server.dto.temp_request.court_type;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

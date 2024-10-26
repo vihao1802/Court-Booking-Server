@@ -4,9 +4,9 @@ import com.court_booking_project.court_booking_server.config.MomoSettings;
 import com.court_booking_project.court_booking_server.entity.Reservation;
 import com.court_booking_project.court_booking_server.repository.IReservationRepository;
 import com.court_booking_project.court_booking_server.service.interfaces.IReservationService;
-import com.court_booking_project.court_booking_server.dto.request.momo.MomoCreatePaymentDTO;
-import com.court_booking_project.court_booking_server.dto.request.momo.MomoRequestCreatePaymentDTO;
-import com.court_booking_project.court_booking_server.dto.request.momo.MomoCallbackDTO;
+import com.court_booking_project.court_booking_server.dto.temp_request.momo.MomoCreatePaymentDTO;
+import com.court_booking_project.court_booking_server.dto.temp_request.momo.MomoRequestCreatePaymentDTO;
+import com.court_booking_project.court_booking_server.dto.temp_request.momo.MomoCallbackDTO;
 
 import com.court_booking_project.court_booking_server.utils.momo.CreateSignature;
 import org.springframework.stereotype.Service;

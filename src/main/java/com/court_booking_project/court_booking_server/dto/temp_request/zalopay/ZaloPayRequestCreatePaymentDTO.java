@@ -1,4 +1,4 @@
-package com.court_booking_project.court_booking_server.dto.request.zalopay;
+package com.court_booking_project.court_booking_server.dto.temp_request.zalopay;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
