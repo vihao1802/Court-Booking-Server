@@ -1,10 +1,10 @@
 package com.court_booking_project.court_booking_server.controller;
 
-import com.court_booking_project.court_booking_server.dto.request.momo.MomoCallbackDTO;
-import com.court_booking_project.court_booking_server.dto.request.momo.MomoCreatePaymentDTO;
-import com.court_booking_project.court_booking_server.dto.request.momo.MomoRequestCreatePaymentDTO;
-import com.court_booking_project.court_booking_server.dto.request.zalopay.ZaloPayRequestCreatePaymentDTO;
-import com.court_booking_project.court_booking_server.dto.request.zalopay.ZaloPayCallBackDTO;
+import com.court_booking_project.court_booking_server.dto.temp_request.momo.MomoCallbackDTO;
+import com.court_booking_project.court_booking_server.dto.temp_request.momo.MomoCreatePaymentDTO;
+import com.court_booking_project.court_booking_server.dto.temp_request.momo.MomoRequestCreatePaymentDTO;
+import com.court_booking_project.court_booking_server.dto.temp_request.zalopay.ZaloPayRequestCreatePaymentDTO;
+import com.court_booking_project.court_booking_server.dto.temp_request.zalopay.ZaloPayCallBackDTO;
 import com.court_booking_project.court_booking_server.service.implementations.ZaloPayService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;

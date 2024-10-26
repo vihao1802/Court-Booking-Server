@@ -4,7 +4,7 @@ import com.court_booking_project.court_booking_server.constant.PredefineRole;
 import com.court_booking_project.court_booking_server.exception.AppException;
 import com.court_booking_project.court_booking_server.exception.ErrorCode;
 import com.court_booking_project.court_booking_server.mapper.UserMapper;
-import com.court_booking_project.court_booking_server.dto.request.authentication.CreateUserRequest;
+import com.court_booking_project.court_booking_server.dto.temp_request.authentication.CreateUserRequest;
 import com.court_booking_project.court_booking_server.dto.response.authentication.UserResponse;
 import com.court_booking_project.court_booking_server.entity.Role;
 import com.court_booking_project.court_booking_server.entity.User;
