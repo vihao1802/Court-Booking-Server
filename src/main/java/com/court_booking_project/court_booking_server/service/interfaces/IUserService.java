@@ -10,9 +10,9 @@ public interface IUserService {
     UserResponse add(CreateUserRequest createUserRequest);
 
     List<User> getAll();
+    UserResponse getMyInfo();
+    UserResponse getById(String id);
 
-    User getById(String id);
-
-    User findByEmail(String email);
-    User update(String id, User user);
+    UserResponse findByEmail(String email);
+    UserResponse update(String id, User user);
 }

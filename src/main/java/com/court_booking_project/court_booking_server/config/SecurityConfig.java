@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -21,6 +22,7 @@ import javax.crypto.spec.SecretKeySpec;
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity
 public class SecurityConfig {
 
     @Value("${jwt.secretSigningKey}")
@@ -41,12 +43,17 @@ public class SecurityConfig {
         httpSecurity.authorizeHttpRequests(authorizeRequests ->
                 authorizeRequests
                         .requestMatchers(HttpMethod.POST, PUBLIC_ENDPOINT).permitAll()
-                        .requestMatchers(HttpMethod.GET, ADMIN_ONLY_ENDPOINT)
-                        .hasAuthority(PredefineRole.ADMIN_ROLE)
+//                        .requestMatchers(HttpMethod.GET, ADMIN_ONLY_ENDPOINT)
+//                        .hasAuthority(PredefineRole.ADMIN_ROLE)
                         .anyRequest().authenticated()
         );
 
-        httpSecurity.oauth2ResourceServer(oauth2 -> oauth2.jwt(jwtConfigurer -> jwtConfigurer.decoder(JwtDecoders())));
+        httpSecurity.oauth2ResourceServer(oauth2 ->
+                oauth2
+                        .jwt(jwtConfigurer -> jwtConfigurer
+                            .decoder(JwtDecoders())
+                            .jwtAuthenticationConverter(jwtAuthenticationConverter()))
+                        .authenticationEntryPoint(new JwtAuthenticationEntryPoint()));
 
         httpSecurity.csrf(AbstractHttpConfigurer::disable);
         return httpSecurity.build();
