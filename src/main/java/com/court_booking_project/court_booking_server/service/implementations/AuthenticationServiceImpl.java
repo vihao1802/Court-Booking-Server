@@ -96,8 +96,8 @@ public class AuthenticationServiceImpl implements IAuthenticationService {
             throw new RuntimeException(e);
         }
     }
-    public boolean verifyToken(String token) {
-        if (token.equals("")) throw new AppException(ErrorCode.INVALID_TOKEN);
+    private boolean verifyToken(String token) {
+        if (token.isEmpty()) throw new AppException(ErrorCode.INVALID_TOKEN);
 
         try {
             JWSVerifier verifier = new MACVerifier(SECRET_SIGNING_KEY.getBytes());

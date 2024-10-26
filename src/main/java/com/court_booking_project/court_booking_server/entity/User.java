@@ -3,6 +3,8 @@ package com.court_booking_project.court_booking_server.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.UuidGenerator;
+
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.UUID;
 
@@ -23,7 +25,7 @@ public class User {
     private String email;
     private String password;
     private String phoneNumber;
-    private Date dayOfBirth;
+    private LocalDate dayOfBirth;
     private Date createdAt;
     private String location;
     private int isDisabled;
