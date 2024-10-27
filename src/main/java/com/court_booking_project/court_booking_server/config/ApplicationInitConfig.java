@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
@@ -19,7 +20,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @FieldDefaults(level = AccessLevel.PRIVATE,makeFinal = true)
 @Slf4j
 public class ApplicationInitConfig {
-
     PasswordEncoder passwordEncoder;
 
     @Bean
