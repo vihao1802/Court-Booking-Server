@@ -1,6 +1,7 @@
 package com.court_booking_project.court_booking_server.service.implementations;
 
 import com.court_booking_project.court_booking_server.dto.request.authentication.LogoutRequest;
+import com.court_booking_project.court_booking_server.dto.request.authentication.RefreshTokenRequest;
 import com.court_booking_project.court_booking_server.entity.InvalidatedToken;
 import com.court_booking_project.court_booking_server.entity.User;
 import com.court_booking_project.court_booking_server.exception.AppException;
@@ -48,6 +49,9 @@ public class AuthenticationServiceImpl implements IAuthenticationService {
     @Value("${jwt.expirationTime}")
     long EXPIRATION_TIME;
 
+    @NonFinal
+    @Value("${jwt.refreshableDuration}")
+    long REFRESHABLE_DURATION;
 
     public AuthenticationResponse login(LoginRequestDto loginRequestDto) {
         var user = userRepository.findByEmail(loginRequestDto.getEmail());
@@ -74,7 +78,7 @@ public class AuthenticationServiceImpl implements IAuthenticationService {
         boolean isValid = true;
 
         try{
-            verifyToken(token);
+            verifyToken(token,false);
         }catch (AppException e){
             isValid = false;
         }
@@ -87,7 +91,7 @@ public class AuthenticationServiceImpl implements IAuthenticationService {
     @Override
     public void logout(LogoutRequest logoutRequest) {
         try {
-            var signedJWT = verifyToken(logoutRequest.getToken());
+            var signedJWT = verifyToken(logoutRequest.getToken(),true);
 
             InvalidatedToken invalidatedToken = InvalidatedToken.builder()
                     .id(signedJWT.getJWTClaimsSet().getJWTID())
@@ -101,6 +105,31 @@ public class AuthenticationServiceImpl implements IAuthenticationService {
         }
     }
 
+    @Override
+    public AuthenticationResponse refreshToken(RefreshTokenRequest refreshTokenRequest) throws AppException, ParseException, JOSEException {
+        var token = refreshTokenRequest.getToken();
+
+        var signedJWT = verifyToken(token,true);
+
+        Date expiryTime = signedJWT.getJWTClaimsSet().getIssueTime();
+
+        var email = signedJWT.getJWTClaimsSet().getSubject();
+
+        var jtd = signedJWT.getJWTClaimsSet().getJWTID();
+
+        InvalidatedToken invalidatedToken = InvalidatedToken.builder()
+                .id(jtd)
+                .expiryDate(expiryTime)
+                .build();
+
+        invalidateTokenRepository.save(invalidatedToken);
+
+        var user = userRepository.findByEmail(email).orElseThrow(()->new AppException(ErrorCode.UNAUTHENTICATED));
+        return AuthenticationResponse.builder()
+                .token(generateToken(user))
+                .authenticated(true)
+                .build();
+    }
 
     private String generateToken(User user) {
         JWSHeader header = new JWSHeader(JWSAlgorithm.HS256);
@@ -125,14 +154,21 @@ public class AuthenticationServiceImpl implements IAuthenticationService {
             throw new RuntimeException(e);
         }
     }
-    private SignedJWT verifyToken(String token) throws AppException,JOSEException, ParseException {
+    private SignedJWT verifyToken(String token,boolean isRefresh) throws AppException,JOSEException, ParseException {
         if (token.isEmpty()) throw new AppException(ErrorCode.UNAUTHENTICATED);
 
         JWSVerifier verifier = new MACVerifier(SECRET_SIGNING_KEY.getBytes());
 
             SignedJWT signedJWT = SignedJWT.parse(token);
 
-            var expirationTime = signedJWT.getJWTClaimsSet().getExpirationTime();
+            var expirationTime =(isRefresh)
+                    ? new Date(signedJWT
+                        .getJWTClaimsSet()
+                        .getIssueTime()
+                        .toInstant()
+                        .plus(REFRESHABLE_DURATION, ChronoUnit.SECONDS)
+                        .toEpochMilli())
+                    : signedJWT.getJWTClaimsSet().getExpirationTime();
 
             var verified = signedJWT.verify(verifier);
 

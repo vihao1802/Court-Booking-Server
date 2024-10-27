@@ -3,6 +3,7 @@ package com.court_booking_project.court_booking_server.controller;
 import com.court_booking_project.court_booking_server.dto.request.authentication.IntrospectRequest;
 import com.court_booking_project.court_booking_server.dto.request.authentication.LoginRequestDto;
 import com.court_booking_project.court_booking_server.dto.request.authentication.LogoutRequest;
+import com.court_booking_project.court_booking_server.dto.request.authentication.RefreshTokenRequest;
 import com.court_booking_project.court_booking_server.dto.response.authentication.AuthenticationResponse;
 import com.court_booking_project.court_booking_server.dto.response.authentication.IntrospectResponse;
 import com.court_booking_project.court_booking_server.service.interfaces.IAuthenticationService;
@@ -41,4 +42,10 @@ public class AuthenticationController {
         authenticationService.logout(logoutRequest);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    @PostMapping("/refresh-token")
+    public ResponseEntity<AuthenticationResponse> refreshToken(@RequestBody RefreshTokenRequest refreshTokenRequest) throws ParseException, JOSEException {
+        return new ResponseEntity<>(authenticationService.refreshToken(refreshTokenRequest), HttpStatus.OK);
+    }
+
 }
