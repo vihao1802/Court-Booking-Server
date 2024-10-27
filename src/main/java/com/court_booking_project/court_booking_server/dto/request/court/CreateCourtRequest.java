@@ -1,5 +1,7 @@
 package com.court_booking_project.court_booking_server.dto.request.court;
 
+import com.court_booking_project.court_booking_server.dto.request.court_image.CreateCourtImageRequest;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -8,6 +10,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
+
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -37,4 +41,7 @@ public class CreateCourtRequest {
 
     @NotEmpty(message = "courtTypeId cannot be an empty string")
     String courtTypeId;
+
+    @Valid
+    List<@NotNull CreateCourtImageRequest> courtImageList;
 }

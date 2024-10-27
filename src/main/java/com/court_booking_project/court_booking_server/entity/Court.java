@@ -43,7 +43,7 @@ public class Court {
     @JoinColumn(name= "court_type_id",referencedColumnName = "id", nullable = false)
     CourtType courtType;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "court")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "court", cascade = CascadeType.ALL)
     List<CourtImage> courtImageList;
 
 }
