@@ -1,6 +1,7 @@
 package com.court_booking_project.court_booking_server.config;
 
 import com.court_booking_project.court_booking_server.constant.PredefineRole;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,6 +25,8 @@ import javax.crypto.spec.SecretKeySpec;
 @EnableWebSecurity
 @EnableMethodSecurity
 public class SecurityConfig {
+    @Autowired
+    private CustomJwtDecoder customJwtDecoder;
 
     @Value("${jwt.secretSigningKey}")
     String SECRET_SIGNING_KEY;
@@ -33,27 +36,21 @@ public class SecurityConfig {
             "/api/v1/users/register"
     };
 
-    private final String[] ADMIN_ONLY_ENDPOINT = {
-            "/api/v1/users",
-            "/api/v1/roles"
-    };
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.authorizeHttpRequests(authorizeRequests ->
                 authorizeRequests
                         .requestMatchers(HttpMethod.POST, PUBLIC_ENDPOINT).permitAll()
-//                        .requestMatchers(HttpMethod.GET, ADMIN_ONLY_ENDPOINT)
-//                        .hasAuthority(PredefineRole.ADMIN_ROLE)
                         .anyRequest().authenticated()
         );
 
         httpSecurity.oauth2ResourceServer(oauth2 ->
                 oauth2
                         .jwt(jwtConfigurer -> jwtConfigurer
-                            .decoder(JwtDecoders())
+                            .decoder(customJwtDecoder)
                             .jwtAuthenticationConverter(jwtAuthenticationConverter()))
-                        .authenticationEntryPoint(new JwtAuthenticationEntryPoint()));
+                        .authenticationEntryPoint(new JwtAuthenticationEntryPoint())); // add filter exception
 
         httpSecurity.csrf(AbstractHttpConfigurer::disable);
         return httpSecurity.build();
@@ -61,7 +58,7 @@ public class SecurityConfig {
     @Bean
     JwtAuthenticationConverter jwtAuthenticationConverter() {
         JwtGrantedAuthoritiesConverter jwtGrantedAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();
-        jwtGrantedAuthoritiesConverter.setAuthorityPrefix("");
+        jwtGrantedAuthoritiesConverter.setAuthorityPrefix("ROLE_");
 
         JwtAuthenticationConverter jwtAuthenticationConverter = new JwtAuthenticationConverter();
         jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(jwtGrantedAuthoritiesConverter);

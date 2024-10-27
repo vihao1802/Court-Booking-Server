@@ -10,6 +10,8 @@ import com.court_booking_project.court_booking_server.entity.Role;
 import com.court_booking_project.court_booking_server.entity.User;
 import com.court_booking_project.court_booking_server.repository.IUserRepository;
 import com.court_booking_project.court_booking_server.service.interfaces.IUserService;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -23,30 +25,28 @@ import java.util.List;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
+@FieldDefaults(level = lombok.AccessLevel.PRIVATE, makeFinal = true)
 public class UserServiceImpl implements IUserService {
 
-    private final IUserRepository userRepository;
-    private final UserMapper userMapper;
-    private final RoleServiceImpl roleServiceImpl;
-
-    public UserServiceImpl(IUserRepository userRepository, UserMapper userMapper, RoleServiceImpl roleServiceImpl) {
-        this.userRepository = userRepository;
-        this.userMapper = userMapper;
-        this.roleServiceImpl = roleServiceImpl;
-    }
+    IUserRepository userRepository;
+    UserMapper userMapper;
+    RoleServiceImpl roleServiceImpl;
+    PasswordEncoder passwordEncoder;
 
     @Override
     public UserResponse add(CreateUserRequest createUserRequest) {
+        var checkEmail = userRepository.findByEmail(createUserRequest.getEmail());
+
+        if(checkEmail.isPresent())
+            throw new AppException(ErrorCode.USER_EXISTED);
+
         User user = userMapper.toUser(createUserRequest);
-
         user.setCreatedAt(Date.from(java.time.Instant.now()));
-
-        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         Role userRole = roleServiceImpl.getByName(PredefineRole.USER_ROLE);
         user.setRole(userRole);
-
 
         try{
             userRepository.save(user);
