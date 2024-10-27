@@ -23,7 +23,7 @@ public class CourtServiceImpl implements ICourtService {
 
     ICourtRepository courtRepository;
     ICourtTypeRepository courtTypeRepository;
-    private final CourtMapper courtMapper;
+    CourtMapper courtMapper;
 
     @Override
     public List<CourtResponse> getAll() {
