@@ -4,25 +4,35 @@ import com.court_booking_project.court_booking_server.dto.request.court.CreateCo
 import com.court_booking_project.court_booking_server.dto.request.court.UpdateCourtRequest;
 import com.court_booking_project.court_booking_server.dto.response.court.CourtResponse;
 import com.court_booking_project.court_booking_server.entity.Court;
+import com.court_booking_project.court_booking_server.entity.CourtImage;
 import com.court_booking_project.court_booking_server.entity.CourtType;
+import com.court_booking_project.court_booking_server.exception.AppException;
+import com.court_booking_project.court_booking_server.exception.BadRequestException;
+import com.court_booking_project.court_booking_server.exception.ErrorCode;
 import com.court_booking_project.court_booking_server.mapper.CourtMapper;
+import com.court_booking_project.court_booking_server.repository.ICourtImageRepository;
 import com.court_booking_project.court_booking_server.repository.ICourtRepository;
 import com.court_booking_project.court_booking_server.repository.ICourtTypeRepository;
 import com.court_booking_project.court_booking_server.service.interfaces.ICourtService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE,makeFinal = true)
 public class CourtServiceImpl implements ICourtService {
 
+    private static final Log log = LogFactory.getLog(CourtServiceImpl.class);
     ICourtRepository courtRepository;
     ICourtTypeRepository courtTypeRepository;
+    ICourtImageRepository courtImageRepository;
     CourtMapper courtMapper;
 
     @Override
@@ -38,11 +48,21 @@ public class CourtServiceImpl implements ICourtService {
     @Override
     public CourtResponse add(CreateCourtRequest request) {
         CourtType courtType = courtTypeRepository.findById(request.getCourtTypeId())
-                .orElseThrow(() -> new IllegalArgumentException("Invalid court type ID"));
+                .orElseThrow(() -> new BadRequestException("Invalid courtTypeId"));
 
         Court court = courtMapper.convertCreateDTOtoEntity(request);
-
         court.setCourtType(courtType);
+
+        List<CourtImage> courtImages = request.getCourtImageList().stream()
+                .map(imageRequest -> {
+                    CourtImage courtImage = new CourtImage();
+                    courtImage.setCourtImageSrc(imageRequest.getCourtImageSrc());
+                    courtImage.setImageType(imageRequest.getImageType());
+                    courtImage.setCourt(court);
+                    return courtImage;
+                }).toList();
+
+        court.setCourtImageList(courtImages);
 
         courtRepository.save(court);
         return courtMapper.convertEntityToDTO(court);
