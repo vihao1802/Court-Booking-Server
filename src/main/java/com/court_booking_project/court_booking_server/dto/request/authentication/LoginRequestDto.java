@@ -2,14 +2,19 @@ package com.court_booking_project.court_booking_server.dto.request.authenticatio
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import io.swagger.v3.oas.annotations.media.Schema;
 
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class LoginRequestDto {
-    private String email;
-    private String password;
+
+    @Schema(description = "Email", example = "admin@admin.com")
+    String email;
+
+
+    @Schema(description = "Password", example = "admin")
+    String password;
 }

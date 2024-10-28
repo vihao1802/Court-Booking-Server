@@ -42,6 +42,7 @@ public class SecurityConfig {
         httpSecurity.authorizeHttpRequests(authorizeRequests ->
                 authorizeRequests
                         .requestMatchers(HttpMethod.POST, PUBLIC_ENDPOINT).permitAll()
+                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll() // Allow Swagger and OpenAPI docs
                         .anyRequest().authenticated()
         );
 
