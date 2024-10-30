@@ -19,7 +19,7 @@
   <img src="https://img.shields.io/badge/JavaScript-F7DF1E?logo=javascript&logoColor=000"/></a>&nbsp 
 </p>
 
-> `Court Booking Website` that provides an optimzed UI with various features in booking system such as online payment with QR code scan (ZaloPay, MoMo), booking management, etc.
+> `Court Booking Website` that provides an optimzed UI with various features in booking system such as online paymentMethod with QR code scan (ZaloPay, MoMo), booking management, etc.
 
 <!-- <img src="/docs/screenshot.png" width="100%"> -->
 

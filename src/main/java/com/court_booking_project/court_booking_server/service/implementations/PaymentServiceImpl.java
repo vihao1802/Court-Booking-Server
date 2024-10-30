@@ -1,6 +1,6 @@
 package com.court_booking_project.court_booking_server.service.implementations;
 
-import com.court_booking_project.court_booking_server.entity.Payment;
+import com.court_booking_project.court_booking_server.entity.PaymentMethod;
 import com.court_booking_project.court_booking_server.repository.IPaymentRepository;
 import com.court_booking_project.court_booking_server.service.interfaces.IPaymentService;
 import org.springframework.stereotype.Service;
@@ -16,17 +16,17 @@ public class PaymentServiceImpl implements IPaymentService {
     }
 
     @Override
-    public Payment get(String paymentId) {
+    public PaymentMethod get(String paymentId) {
         return paymentRepository.findById(paymentId).get();
     }
 
     @Override
-    public List<Payment> getAll() {
+    public List<PaymentMethod> getAll() {
         return paymentRepository.findAll();
     }
 
     @Override
-    public void add(Payment payment) {
-        paymentRepository.save(payment);
+    public void add(PaymentMethod paymentMethod) {
+        paymentRepository.save(paymentMethod);
     }
 }

@@ -1,9 +1,9 @@
 package com.court_booking_project.court_booking_server.repository;
 
-import com.court_booking_project.court_booking_server.entity.Payment;
+import com.court_booking_project.court_booking_server.entity.PaymentMethod;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface IPaymentRepository extends JpaRepository<Payment, String> {
+public interface IPaymentRepository extends JpaRepository<PaymentMethod, String> {
 }
