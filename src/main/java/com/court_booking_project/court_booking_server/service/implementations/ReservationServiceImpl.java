@@ -1,6 +1,7 @@
 package com.court_booking_project.court_booking_server.service.implementations;
 
 import com.court_booking_project.court_booking_server.config.MomoSettings;
+import com.court_booking_project.court_booking_server.constant.ReservationState;
 import com.court_booking_project.court_booking_server.entity.Reservation;
 import com.court_booking_project.court_booking_server.repository.IReservationRepository;
 import com.court_booking_project.court_booking_server.service.interfaces.IReservationService;
@@ -83,7 +84,7 @@ public class ReservationServiceImpl implements IReservationService {
             // Proceed with processing the payment
             Reservation reservation = reservationRepository.findById(id).orElse(null);
             if (reservation != null) {
-                reservation.setReservationState(1);
+                reservation.setReservationState(ReservationState.fromCode(1));
                 reservationRepository.save(reservation); // Save the updated bill
             }
         } else {

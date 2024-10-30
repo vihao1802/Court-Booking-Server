@@ -1,42 +1,33 @@
 package com.court_booking_project.court_booking_server.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.UuidGenerator;
 
 import java.util.UUID;
 
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Entity
 @Table( name = "roles")
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class Role {
 
     @Id
     @UuidGenerator
-    private String id;
+    @Column(name = "id",nullable = false)
+    String id;
 
-    private String roleName;
-    public Role() {
+    @Column(name = "role_name",nullable = false)
+    String roleName;
 
-    }
     public Role(String roleName) {
-        this.id = UUID.randomUUID().toString();
-        this.roleName = roleName;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getRoleName() {
-        return roleName;
-    }
-
-    public void setRoleName(String roleName) {
         this.roleName = roleName;
     }
 }
