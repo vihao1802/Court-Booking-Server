@@ -2,43 +2,78 @@ package com.court_booking_project.court_booking_server.service.implementations;
 
 import com.court_booking_project.court_booking_server.config.MomoSettings;
 import com.court_booking_project.court_booking_server.constant.ReservationState;
+import com.court_booking_project.court_booking_server.dto.request.reservation.CreateReservationRequest;
+import com.court_booking_project.court_booking_server.dto.request.reservation.UpdateReservationRequest;
+import com.court_booking_project.court_booking_server.dto.response.reservation.ReservationResponse;
 import com.court_booking_project.court_booking_server.entity.Reservation;
+import com.court_booking_project.court_booking_server.exception.AppException;
+import com.court_booking_project.court_booking_server.exception.ErrorCode;
+import com.court_booking_project.court_booking_server.mapper.ReservationMapper;
+import com.court_booking_project.court_booking_server.repository.ICourtRepository;
 import com.court_booking_project.court_booking_server.repository.IReservationRepository;
+import com.court_booking_project.court_booking_server.repository.IUserRepository;
 import com.court_booking_project.court_booking_server.service.interfaces.IReservationService;
 import com.court_booking_project.court_booking_server.dto.request.momo.MomoCreatePaymentDTO;
 import com.court_booking_project.court_booking_server.dto.request.momo.MomoRequestCreatePaymentDTO;
 import com.court_booking_project.court_booking_server.dto.request.momo.MomoCallbackDTO;
 
 import com.court_booking_project.court_booking_server.utils.momo.CreateSignature;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE,makeFinal = true)
 public class ReservationServiceImpl implements IReservationService {
 
-    private final IReservationRepository reservationRepository;
+    IReservationRepository reservationRepository;
+    ICourtRepository courtRepository;
+    IUserRepository userRepository;
     MomoService momoService;
     MomoSettings momoSettings;
     CreateSignature createSignature;
+    ReservationMapper reservationMapper;
 
-    public ReservationServiceImpl(IReservationRepository reservationRepository) {
-        this.reservationRepository = reservationRepository;
+    @Override
+    public ReservationResponse get(String id) {
+        return reservationRepository.findById(id).map(reservationMapper::convertEntityToResponse).orElseThrow(() -> new RuntimeException("reservation not found"));
     }
 
     @Override
-    public Reservation get(String id) {
-        return reservationRepository.findById(id).get();
+    public List<ReservationResponse> getAll() {
+        return reservationRepository.findAll().stream().map(reservationMapper::convertEntityToResponse).toList();
     }
 
     @Override
-    public List<Reservation> getAll() {
-        return reservationRepository.findAll();
-    }
+    public ReservationResponse add(CreateReservationRequest request) {
+        var court = courtRepository.findById(request.getCourtId());
+        var user = userRepository.findById(request.getUserId());
 
-    @Override
-    public void add(Reservation reservation) {
+        if(court.isEmpty())
+            throw new AppException(ErrorCode.NOT_FOUND_COURT_ID);
+        if(user.isEmpty())
+            throw new AppException(ErrorCode.NOT_FOUND_USER_ID);
+
+        Reservation reservation = reservationMapper.convertCreateDTOtoEntity(request);
+
+        reservation.setCourt(court.get());
+        reservation.setUser(user.get());
+
         reservationRepository.save(reservation);
+
+        return reservationMapper.convertEntityToResponse(reservation);
+    }
+
+    @Override
+    public ReservationResponse update(String id, UpdateReservationRequest request) {
+        Reservation reservation = reservationRepository.findById(id).orElseThrow(() -> new RuntimeException("reservation not found"));
+        reservationMapper.convertUpdateDTOtoEntity(reservation,request);
+        reservationRepository.save(reservation);
+        return reservationMapper.convertEntityToResponse(reservation);
     }
 
     public MomoCreatePaymentDTO createPaymentMomo (String id, MomoRequestCreatePaymentDTO request) {

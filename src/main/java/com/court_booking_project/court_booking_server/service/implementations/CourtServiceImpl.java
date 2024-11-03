@@ -5,9 +5,7 @@ import com.court_booking_project.court_booking_server.dto.request.court.UpdateCo
 import com.court_booking_project.court_booking_server.dto.response.court.CourtResponse;
 import com.court_booking_project.court_booking_server.entity.Court;
 import com.court_booking_project.court_booking_server.entity.CourtImage;
-import com.court_booking_project.court_booking_server.entity.CourtType;
 import com.court_booking_project.court_booking_server.exception.AppException;
-import com.court_booking_project.court_booking_server.exception.BadRequestException;
 import com.court_booking_project.court_booking_server.exception.ErrorCode;
 import com.court_booking_project.court_booking_server.mapper.CourtMapper;
 import com.court_booking_project.court_booking_server.repository.ICourtImageRepository;
@@ -22,7 +20,6 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -47,11 +44,13 @@ public class CourtServiceImpl implements ICourtService {
 
     @Override
     public CourtResponse add(CreateCourtRequest request) {
-        CourtType courtType = courtTypeRepository.findById(request.getCourtTypeId())
-                .orElseThrow(() -> new BadRequestException("Invalid courtTypeId"));
+        var courtType = courtTypeRepository.findById(request.getCourtTypeId());
+
+        if(courtType.isEmpty())
+            throw new AppException(ErrorCode.INVALID_COURT_TYPE_ID);
 
         Court court = courtMapper.convertCreateDTOtoEntity(request);
-        court.setCourtType(courtType);
+        court.setCourtType(courtType.get());
 
         List<CourtImage> courtImages = request.getCourtImageList().stream()
                 .map(imageRequest -> {

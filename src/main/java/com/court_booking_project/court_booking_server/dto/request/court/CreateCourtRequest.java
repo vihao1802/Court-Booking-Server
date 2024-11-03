@@ -18,28 +18,29 @@ import java.util.List;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class CreateCourtRequest {
-    @NotEmpty(message = "courtName cannot be an empty string")
+    @NotEmpty(message = "EMPTY_COURT_NAME")
     String courtName;
 
-    @NotEmpty(message = "courtDescription cannot be an empty string")
+    @NotEmpty(message = "EMPTY_COURT_DESCRIPTION")
     String courtDescription;
 
-    @NotEmpty(message = "courtAddress cannot be an empty string")
+    @NotEmpty(message = "EMPTY_ADDRESS")
     String courtAddress;
 
-    @NotNull(message = "rentalPricePerHour is required")
-    @Min(value = 1, message = "rentalPricePerHour must be greater than 0")
+    @NotNull(message = "REQUIRED_RENTAL_PRICE_PER_HOUR")
+    @Min(value = 1, message = "INVALID_RENTAL_PRICE_PER_HOUR")
     long rentalPricePerHour;
 
-    @NotNull(message = "minimumRentalTime is required")
-    @Min(value = 1, message = "minimumRentalTime must be greater than 0")
+    @NotNull(message = "REQUIRED_MINIMUM_RENTAL_TIME")
+    @Min(value = 1, message = "INVALID_MINIMUM_RENTAL_TIME")
     int minimumRentalTime;
 
-    @NotNull(message = "maximumRentalTime is required")
-    @Min(value = 1, message = "maximumRentalTime must be greater than 0")
+    @NotNull(message = "REQUIRED_MAXIMUM_RENTAL_TIME")
+    @Min(value = 1, message = "INVALID_MAXIMUM_RENTAL_TIME")
     int maximumRentalTime;
 
-    @NotEmpty(message = "courtTypeId cannot be an empty string")
+    @NotNull(message = "INVALID_COURT_TYPE_ID")
+    @NotEmpty(message = "EMPTY_COURT_TYPE_ID")
     String courtTypeId;
 
     @Valid
