@@ -1,8 +1,14 @@
 package com.court_booking_project.court_booking_server.service.implementations;
 
 import com.court_booking_project.court_booking_server.config.ZaloPayConfig;
+import com.court_booking_project.court_booking_server.constant.PaymentMethod;
+import com.court_booking_project.court_booking_server.constant.ReservationState;
 import com.court_booking_project.court_booking_server.dto.request.zalopay.ZaloPayCallBackDTO;
 import com.court_booking_project.court_booking_server.dto.request.zalopay.ZaloPayRequestCreatePaymentDTO;
+import com.court_booking_project.court_booking_server.entity.Reservation;
+import com.court_booking_project.court_booking_server.exception.AppException;
+import com.court_booking_project.court_booking_server.exception.ErrorCode;
+import com.court_booking_project.court_booking_server.repository.IReservationRepository;
 import com.court_booking_project.court_booking_server.utils.zalopay.ZaloPayUtils;
 import com.court_booking_project.court_booking_server.utils.zalopay.crypto.HMACUtil;
 
@@ -36,16 +42,20 @@ import java.util.logging.Logger;
 public class ZaloPayService {
     ZaloPayConfig zaloPayConfig;
     ZaloPayUtils zaloPayUtils;
+    IReservationRepository reservationRepository;
+
     Logger logger = Logger.getLogger(this.getClass().getName());
 
-    public ResponseEntity<?> createPaymentZaloPay(String id, ZaloPayRequestCreatePaymentDTO request) throws Exception
+    public ResponseEntity<?> createPaymentZaloPay(String id) throws Exception
     {
-//        int payment_id = new Random().nextInt(1000);
-        UUID uuid = UUID.randomUUID();
-        String reservation_id = id.toString().substring(0, 30);
+        Reservation reservation = reservationRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.NOT_FOUND_RESERVATION_ID));
+        reservation.setPaymentMethod(PaymentMethod.ZALOPAY);
+        reservationRepository.save(reservation);
+
+        String short_reservation_id = reservation.getId().substring(0, 30);
 
         final Map<String,String> embed_data = new HashMap<String,String>() {{
-            put("redirecturl", zaloPayConfig.getRedirectUrl());
+            put("redirecturl", zaloPayConfig.getRedirectUrl().replace("{id}",id));
         }};
         final Map<String, Object>[] items = new Map[]{};
 
@@ -57,13 +67,13 @@ public class ZaloPayService {
 
         Map<String, Object> order = new HashMap<String, Object>(){{
             put("app_id", zaloPayConfig.getApp_id());
-            put("app_trans_id", zaloPayUtils.getCurrentTimeString("yyMMdd") +"_"+ reservation_id); // translation missing: vi.docs.shared.sample_code.comments.app_trans_id
+            put("app_trans_id", zaloPayUtils.getCurrentTimeString("yyMMdd") +"_"+ short_reservation_id); // translation missing: vi.docs.shared.sample_code.comments.app_trans_id
             put("app_time", System.currentTimeMillis()); // miliseconds
-            put("app_user", request.getUserName());
-            put("amount", request.getTotalPrice().toString());
-            put("description", "Thanh toan don hang #" + reservation_id);
+            put("app_user", reservation.getUser().getUserName());
+            put("amount", String.valueOf(reservation.getTotalPrice()));
+            put("description", "Thanh toan don hang #" + short_reservation_id);
             put("bank_code", "zalopayapp");
-            put("callback_url", zaloPayConfig.getCallbackUrl());
+            put("callback_url", zaloPayConfig.getCallbackUrl().replace("{id}",id));
             put("item",  jsonArray.toString());
             put("embed_data", new JSONObject(embed_data));
         }};
@@ -106,10 +116,11 @@ public class ZaloPayService {
         return ResponseEntity.ok().body(resultMap);
     }
 
-    public String handleZaloCallback(ZaloPayCallBackDTO jsonStr) throws NoSuchAlgorithmException, InvalidKeyException {
+    public String handleZaloCallback(String id, ZaloPayCallBackDTO jsonStr) throws NoSuchAlgorithmException, InvalidKeyException {
         JSONObject result = new JSONObject();
         Mac HmacSHA256 = Mac.getInstance("HmacSHA256");
         HmacSHA256.init(new SecretKeySpec(zaloPayConfig.getKey2().getBytes(), "HmacSHA256"));
+        Reservation reservation = reservationRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.NOT_FOUND_RESERVATION_ID));
 
         try {
             JSONObject cdata = new JSONObject(jsonStr);
@@ -124,6 +135,7 @@ public class ZaloPayService {
                 // callback không hợp lệ
                 result.put("return_code", -1);
                 result.put("return_message", "mac not equal");
+                reservation.setReservationState(ReservationState.FAILED);
             } else {
                 // thanh toán thành công
                 // merchant cập nhật trạng thái cho đơn hàng
@@ -132,13 +144,16 @@ public class ZaloPayService {
 
                 result.put("return_code", 1);
                 result.put("return_message", "success");
+                reservation.setReservationState(ReservationState.SUCCESS);
             }
         } catch (Exception ex) {
             result.put("return_code", 0); // ZaloPay server sẽ callback lại (tối đa 3 lần)
             result.put("return_message", ex.getMessage());
+        } finally {
+            reservationRepository.save(reservation);
         }
 
-        System.out.println(result); // For logging, you might want to return this instead
+        System.out.println(result);
 
         return result.toString();// thông báo kết quả cho ZaloPay server
     }

@@ -1,4 +1,5 @@
 package com.court_booking_project.court_booking_server.dto.response.reservation;
+import com.court_booking_project.court_booking_server.constant.ReservationState;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -14,7 +15,12 @@ public class ReservationResponse {
     String courtId;
     String checkInTime;
     String checkOutTime;
-    Integer totalPrice;
+    long totalPrice;
     String reservationDate;
-    Integer reservationState;
+    ReservationState reservationState;
+    String paymentMethod;
+
+    public int getReservationState() {
+        return reservationState != null ? reservationState.ordinal() : -1; // return -1 if null or choose a default value
+    }
 }

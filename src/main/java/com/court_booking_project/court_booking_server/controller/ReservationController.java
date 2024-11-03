@@ -3,8 +3,11 @@ package com.court_booking_project.court_booking_server.controller;
 import com.court_booking_project.court_booking_server.dto.request.momo.MomoCallbackDTO;
 import com.court_booking_project.court_booking_server.dto.request.momo.MomoCreatePaymentDTO;
 import com.court_booking_project.court_booking_server.dto.request.momo.MomoRequestCreatePaymentDTO;
+import com.court_booking_project.court_booking_server.dto.request.reservation.CreateReservationRequest;
+import com.court_booking_project.court_booking_server.dto.request.reservation.UpdateReservationRequest;
 import com.court_booking_project.court_booking_server.dto.request.zalopay.ZaloPayRequestCreatePaymentDTO;
 import com.court_booking_project.court_booking_server.dto.request.zalopay.ZaloPayCallBackDTO;
+import com.court_booking_project.court_booking_server.dto.response.reservation.ReservationResponse;
 import com.court_booking_project.court_booking_server.service.implementations.ZaloPayService;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
@@ -15,6 +18,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.court_booking_project.court_booking_server.service.implementations.ReservationServiceImpl;
 
+import java.util.List;
+
 
 @RestController
 @RequiredArgsConstructor
@@ -23,6 +28,27 @@ import com.court_booking_project.court_booking_server.service.implementations.Re
 public class ReservationController {
     ReservationServiceImpl reservationService;
     ZaloPayService zalPayService;
+
+    @GetMapping
+    public List<ReservationResponse> getAllCourts() {
+        return reservationService.getAll();
+    }
+
+    @GetMapping("/{id}")
+    public ReservationResponse getCourt(@PathVariable String id) {
+        return reservationService.get(id);
+    }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public ReservationResponse addCourt(@RequestBody @Valid CreateReservationRequest request) {
+        return reservationService.add(request);
+    }
+
+    @PutMapping("/{id}")
+    public ReservationResponse updateCourt(@PathVariable String id,@RequestBody @Valid UpdateReservationRequest request) {
+        return reservationService.update(id, request);
+    }
 
     @PostMapping("/{id}/payment/momo")
     public ResponseEntity<MomoCreatePaymentDTO> createPaymentMomo(@PathVariable String id, @RequestBody MomoRequestCreatePaymentDTO request) {
@@ -38,12 +64,12 @@ public class ReservationController {
 
 
     @PostMapping("/{id}/payment/zalo-pay")
-    public ResponseEntity<?> createPaymentZaloPay( @PathVariable String id,@RequestBody @Valid ZaloPayRequestCreatePaymentDTO request) throws Exception {
-        return ResponseEntity.status(HttpStatus.OK).body(zalPayService.createPaymentZaloPay(id,request));
+    public ResponseEntity<?> createPaymentZaloPay( @PathVariable String id) throws Exception {
+        return ResponseEntity.status(HttpStatus.OK).body(zalPayService.createPaymentZaloPay(id));
     }
 
-    @PostMapping("/zalo-pay/callback")
-    public String handleZaloCallback(@RequestBody ZaloPayCallBackDTO jsonString) throws Exception {
-        return zalPayService.handleZaloCallback(jsonString);  // Correct: Instance call
+    @PostMapping("/{id}/zalo-pay/callback")
+    public String handleZaloCallback( @PathVariable String id,@RequestBody ZaloPayCallBackDTO jsonString) throws Exception {
+        return zalPayService.handleZaloCallback(id,jsonString);  // Correct: Instance call
     }
 }

@@ -36,6 +36,7 @@ public class ApplicationInitConfig {
                         .email("admin@admin.com")
                         .role(roleRepository.findByRoleName("ADMIN"))
                         .password(passwordEncoder.encode("admin"))
+                        .phoneNumber("0912345678")
                         .build();
                 userRepository.save(newAdmin);
                 log.warn("Admin account created with email:admin@admin, password:admin");
