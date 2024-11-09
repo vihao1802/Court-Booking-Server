@@ -43,13 +43,4 @@ public class WebConfig implements WebMvcConfigurer {
 
         return restTemplate;
     }
-    @Override
-    public void addCorsMappings(CorsRegistry registry) {
-        // Allow CORS for all paths and all origins
-        registry.addMapping("/**") // Allow CORS for all paths
-                .allowedOrigins("*") // Allow all origins
-                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // Allowed HTTP methods
-                .allowedHeaders("*") // Allow all headers
-                .allowCredentials(false); // Credentials are disallowed when using '*'
-    }
 }
