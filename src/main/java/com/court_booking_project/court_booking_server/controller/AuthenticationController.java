@@ -6,18 +6,18 @@ import com.court_booking_project.court_booking_server.dto.request.authentication
 import com.court_booking_project.court_booking_server.dto.request.authentication.RefreshTokenRequest;
 import com.court_booking_project.court_booking_server.dto.response.authentication.AuthenticationResponse;
 import com.court_booking_project.court_booking_server.dto.response.authentication.IntrospectResponse;
+import com.court_booking_project.court_booking_server.dto.response.authentication.UserResponse;
 import com.court_booking_project.court_booking_server.service.interfaces.IAuthenticationService;
 import com.nimbusds.jose.JOSEException;
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/v1/auth")
 public class AuthenticationController {
@@ -47,5 +47,4 @@ public class AuthenticationController {
     public ResponseEntity<AuthenticationResponse> refreshToken(@RequestBody RefreshTokenRequest refreshTokenRequest) throws ParseException, JOSEException {
         return new ResponseEntity<>(authenticationService.refreshToken(refreshTokenRequest), HttpStatus.OK);
     }
-
 }

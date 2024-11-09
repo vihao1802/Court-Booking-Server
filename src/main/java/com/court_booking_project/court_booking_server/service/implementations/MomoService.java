@@ -83,7 +83,7 @@ public class MomoService {
                 HttpEntity<PaymentRequestData> httpEntity = new HttpEntity<>(requestData, headers);
 
                 try {
-                        // Make the HTTP POST request to the Momo API and capture the response
+//                         Make the HTTP POST request to the Momo API and capture the response
                         ResponseEntity<MomoCreatePaymentDTO> response = restTemplate.exchange(
                                         momoSettings.getMomoApiUrl(),
                                         HttpMethod.POST,
