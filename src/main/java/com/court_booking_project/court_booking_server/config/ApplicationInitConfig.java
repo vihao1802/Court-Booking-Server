@@ -15,6 +15,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.time.LocalDate;
+
 @Configuration
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE,makeFinal = true)
@@ -36,7 +38,7 @@ public class ApplicationInitConfig {
                         .email("admin@admin.com")
                         .role(roleRepository.findByRoleName("ADMIN"))
                         .password(passwordEncoder.encode("admin"))
-                        .phoneNumber("0912345678")
+                        .profileImage("https://res.cloudinary.com/dxlnrizu7/image/upload/v1728888785/cld-sample-5.jpg")
                         .build();
                 userRepository.save(newAdmin);
                 log.warn("Admin account created with email:admin@admin, password:admin");
