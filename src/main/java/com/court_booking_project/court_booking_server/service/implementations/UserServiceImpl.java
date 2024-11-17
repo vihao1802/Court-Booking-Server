@@ -3,6 +3,7 @@ package com.court_booking_project.court_booking_server.service.implementations;
 import com.court_booking_project.court_booking_server.constant.CloudinaryFolder;
 import com.court_booking_project.court_booking_server.constant.InitialResources;
 import com.court_booking_project.court_booking_server.constant.PredefineRole;
+import com.court_booking_project.court_booking_server.dto.request.user.UpdatePasswordRequest;
 import com.court_booking_project.court_booking_server.dto.request.user.UpdateUserRequest;
 import com.court_booking_project.court_booking_server.dto.response.CloudinaryResponse;
 import com.court_booking_project.court_booking_server.exception.AppException;
@@ -70,12 +71,7 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public UserResponse getMyInfo() {
-        var context = SecurityContextHolder.getContext();
-
-        String email = context.getAuthentication().getName();
-
-        var user = userRepository.findByEmail(email);
-
+        var user = userRepository.findByEmail(getEmailOfContextHolder());
         if(user.isEmpty())
             throw new AppException(ErrorCode.UNAUTHENTICATED);
 
@@ -102,11 +98,11 @@ public class UserServiceImpl implements IUserService {
 
 
     @Override
-    public UserResponse update(String id, UpdateUserRequest updateUserRequest) {
-        var userEntity = userRepository.findById(id);
+    public UserResponse update(UpdateUserRequest updateUserRequest) {
+        var userEntity = userRepository.findByEmail(getEmailOfContextHolder());
 
         if (userEntity.isEmpty())
-            throw new AppException(ErrorCode.USER_NOT_EXISTED);
+            throw new AppException(ErrorCode.UNAUTHENTICATED);
 
         userMapper.updateUser(userEntity.get(), updateUserRequest);
 
@@ -115,10 +111,10 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public UserResponse updateProfilePicture(String id, MultipartFile imageFile) {
-        var user = userRepository.findById(id);
+    public UserResponse updateProfilePicture(MultipartFile imageFile) {
+        var user = userRepository.findByEmail(getEmailOfContextHolder());
 
-        if(user.isEmpty()) throw new AppException(ErrorCode.USER_NOT_EXISTED);
+        if(user.isEmpty()) throw new AppException(ErrorCode.UNAUTHENTICATED);
 
         CloudinaryResponse cloudinaryResponse = mediaService.uploadMedia(imageFile, CloudinaryFolder.profile);
 
@@ -131,4 +127,25 @@ public class UserServiceImpl implements IUserService {
         return userMapper.toUserResponse(user.get());
     }
 
+    @Override
+    public void updatePassword(UpdatePasswordRequest updatePasswordRequest) {
+        var user = userRepository.findByEmail(getEmailOfContextHolder());
+
+        if(user.isEmpty()) throw new AppException(ErrorCode.USER_NOT_EXISTED);
+
+        if(!passwordEncoder.matches(updatePasswordRequest.getOldPassword(), user.get().getPassword()))
+            throw new AppException(ErrorCode.WRONG_PASSWORD);
+
+        user.get().setPassword(passwordEncoder.encode(updatePasswordRequest.getNewPassword()));
+        try {
+            userRepository.save(user.get());
+        }catch(DataIntegrityViolationException ex){
+            log.error(ex.getMessage());
+            throw new AppException(ErrorCode.UNCATEGORIZED_EXCEPTION);
+        }
+    }
+
+    private String getEmailOfContextHolder(){
+        return SecurityContextHolder.getContext().getAuthentication().getName();
+    }
 }

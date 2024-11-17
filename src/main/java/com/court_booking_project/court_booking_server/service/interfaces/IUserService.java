@@ -1,6 +1,7 @@
 package com.court_booking_project.court_booking_server.service.interfaces;
 
 import com.court_booking_project.court_booking_server.dto.request.authentication.CreateUserRequest;
+import com.court_booking_project.court_booking_server.dto.request.user.UpdatePasswordRequest;
 import com.court_booking_project.court_booking_server.dto.request.user.UpdateUserRequest;
 import com.court_booking_project.court_booking_server.dto.response.authentication.UserResponse;
 import com.court_booking_project.court_booking_server.entity.User;
@@ -16,7 +17,7 @@ public interface IUserService {
     UserResponse getById(String id);
 
     UserResponse findByEmail(String email);
-    UserResponse update(String id, UpdateUserRequest updateUserRequest);
-    UserResponse updateProfilePicture(String id, MultipartFile imageFile);
-
+    UserResponse update(UpdateUserRequest updateUserRequest);
+    UserResponse updateProfilePicture(MultipartFile imageFile);
+    void updatePassword(UpdatePasswordRequest updatePasswordRequest);
 }

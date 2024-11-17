@@ -11,6 +11,8 @@ public enum ErrorCode {
     USER_EXISTED(1002, "User existed", HttpStatus.BAD_REQUEST),
     INVALID_USERNAME(1004, "Tên người dùng không được trống", HttpStatus.BAD_REQUEST),
     INVALID_PASSWORD(1004, "Mật khẩu không đúng định dạng", HttpStatus.BAD_REQUEST),
+    WRONG_AUTHENTICATION_INFO(1004, "Sai mật khẩu hoặc email", HttpStatus.BAD_REQUEST),
+    WRONG_PASSWORD(1004, "Mật khẩu không khớp", HttpStatus.BAD_REQUEST),
     INVALID_DOB(1004, "Ngày sinh không hợp lệ", HttpStatus.BAD_REQUEST),
     INVALID_PHONE_NUMBER(1004, "Số điện thoại không hợp lệ", HttpStatus.BAD_REQUEST),
     INVALID_EMAIL(1004, "Email không hợp lệ", HttpStatus.BAD_REQUEST),

@@ -33,7 +33,11 @@ import java.util.Arrays;
 @EnableMethodSecurity
 public class SecurityConfig  {
     private final String[] PUBLIC_ENDPOINTS = {
-             "api/v1/auth/login", "api/v1/auth/introspect", "api/v1/auth/refresh-token","api/v1/auth/logout"
+            "api/v1/auth/login",
+            "api/v1/auth/introspect",
+            "api/v1/auth/refresh-token",
+            "api/v1/auth/logout",
+            "api/v1/users/register"
     };
 
     @Autowired
