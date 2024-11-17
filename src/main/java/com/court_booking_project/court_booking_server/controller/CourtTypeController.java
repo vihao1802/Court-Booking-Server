@@ -25,6 +25,10 @@ public class CourtTypeController {
         return courtTypeService.getAll();
     }
 
+    @GetMapping("/active")
+    public List<CourtTypeResponse> getActiveCourtTypes(@RequestParam(name = "isdisabled") String isDisabled) {
+        return courtTypeService.getActiveCourtTypes(Integer.parseInt(isDisabled));
+    }
     @GetMapping("/{id}")
     public CourtTypeResponse getCourtTypeById(@PathVariable String id) {
         return courtTypeService.get(id);

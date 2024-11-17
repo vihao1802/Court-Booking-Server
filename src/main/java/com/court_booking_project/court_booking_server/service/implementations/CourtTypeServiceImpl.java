@@ -31,6 +31,11 @@ public class CourtTypeServiceImpl implements ICourtTypeService {
     }
 
     @Override
+    public List<CourtTypeResponse> getActiveCourtTypes(int isDisabled) {
+        return courtTypeRepository.findByIsDisabled(isDisabled).stream().map(courtTypeMapper::convertEntityToDTO).toList();
+    }
+
+    @Override
     public CourtTypeResponse get(String id) {
         return courtTypeRepository.findById(id).map(courtTypeMapper::convertEntityToDTO).orElseThrow(() -> new RuntimeException("Court Type not found"));
     }

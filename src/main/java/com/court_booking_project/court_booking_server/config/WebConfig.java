@@ -1,8 +1,11 @@
 package com.court_booking_project.court_booking_server.config;
 
+import com.cloudinary.Cloudinary;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import lombok.experimental.NonFinal;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -11,10 +14,21 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
+    @Value("${cloudinary.secretKey}")
+    String CLOUDINARY_SECRET_KEY;
+
+    @Value("${cloudinary.APIKey}")
+    String CLOUDINARY_API_KEY;
+
+    @Value("${cloudinary.cloudName}")
+    String CLOUDINARY_CLOUD_NAME;
+
     @Bean
     public ObjectMapper objectMapper() {
         ObjectMapper objectMapper = new ObjectMapper();
@@ -40,7 +54,15 @@ public class WebConfig implements WebMvcConfigurer {
         if (!hasJacksonConverter) {
             messageConverters.add(new MappingJackson2HttpMessageConverter());
         }
-
         return restTemplate;
+    }
+
+    @Bean
+    public Cloudinary cloudinary() {
+        Map<String, String> config = new HashMap<>();
+        config.put("cloud_name", CLOUDINARY_CLOUD_NAME);
+        config.put("api_key", CLOUDINARY_API_KEY);
+        config.put("api_secret", CLOUDINARY_SECRET_KEY);
+        return new Cloudinary(config);
     }
 }

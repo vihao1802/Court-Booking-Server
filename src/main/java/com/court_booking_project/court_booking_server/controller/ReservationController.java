@@ -7,12 +7,14 @@ import com.court_booking_project.court_booking_server.dto.request.reservation.Cr
 import com.court_booking_project.court_booking_server.dto.request.reservation.UpdateReservationRequest;
 import com.court_booking_project.court_booking_server.dto.request.zalopay.ZaloPayRequestCreatePaymentDTO;
 import com.court_booking_project.court_booking_server.dto.request.zalopay.ZaloPayCallBackDTO;
+import com.court_booking_project.court_booking_server.dto.response.ApiResponse;
 import com.court_booking_project.court_booking_server.dto.response.reservation.ReservationResponse;
 import com.court_booking_project.court_booking_server.service.implementations.ZaloPayService;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -39,6 +41,10 @@ public class ReservationController {
         return reservationService.get(id);
     }
 
+    @GetMapping("/my-reservations")
+    public ResponseEntity<List<ReservationResponse>> getMyReservations() {
+        return  new ResponseEntity<>(reservationService.getMyReservations(), HttpStatus.OK);
+    }
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ReservationResponse addCourt(@RequestBody @Valid CreateReservationRequest request) {

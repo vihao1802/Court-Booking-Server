@@ -33,7 +33,7 @@ import java.util.Arrays;
 @EnableMethodSecurity
 public class SecurityConfig  {
     private final String[] PUBLIC_ENDPOINTS = {
-             "api/v1/auth/login", "api/v1/auth/introspect", "api/v1/auth/refresh-token", "api/v1/auth/test"
+             "api/v1/auth/login", "api/v1/auth/introspect", "api/v1/auth/refresh-token","api/v1/auth/logout"
     };
 
     @Autowired
@@ -56,20 +56,6 @@ public class SecurityConfig  {
         return httpSecurity.build();
     }
 
-//    @Bean
-//    public CorsFilter corsFilter() {
-//        CorsConfiguration corsConfiguration = new CorsConfiguration();
-//
-//        corsConfiguration.addAllowedOrigin("*");
-//        corsConfiguration.addAllowedMethod("*");
-//        corsConfiguration.addAllowedHeader("*");
-//
-//        UrlBasedCorsConfigurationSource urlBasedCorsConfigurationSource = new UrlBasedCorsConfigurationSource();
-//        urlBasedCorsConfigurationSource.registerCorsConfiguration("/**", corsConfiguration);
-//
-//        return new CorsFilter(urlBasedCorsConfigurationSource);
-//    }
-
     @Bean
     JwtAuthenticationConverter jwtAuthenticationConverter() {
         JwtGrantedAuthoritiesConverter jwtGrantedAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();
@@ -85,4 +71,5 @@ public class SecurityConfig  {
     PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder(10);
     }
+
 }

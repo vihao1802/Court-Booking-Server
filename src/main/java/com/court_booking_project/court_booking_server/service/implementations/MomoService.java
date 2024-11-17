@@ -42,7 +42,7 @@ public class MomoService {
                 String extraData = Base64.getEncoder().encodeToString(objectMapper.writeValueAsBytes(new ExtraData(reservation.getId())));
 
                 // Build rawData
-                String rawData = String.format("accessKey=%s&amount=%.0f&extraData=%s&ipnUrl=%s&orderId=%s&orderInfo=%s" +
+                String rawData = String.format("accessKey=%s&amount=%d&extraData=%s&ipnUrl=%s&orderId=%s&orderInfo=%s" +
                                         "&partnerCode=%s&redirectUrl=%s&requestId=%s&requestType=%s",
                                 momoSettings.getAccessKey(),
                                 reservation.getTotalPrice(),

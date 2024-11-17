@@ -1,6 +1,10 @@
 package com.court_booking_project.court_booking_server.service.implementations;
 
+import com.court_booking_project.court_booking_server.constant.CloudinaryFolder;
+import com.court_booking_project.court_booking_server.constant.InitialResources;
 import com.court_booking_project.court_booking_server.constant.PredefineRole;
+import com.court_booking_project.court_booking_server.dto.request.user.UpdateUserRequest;
+import com.court_booking_project.court_booking_server.dto.response.CloudinaryResponse;
 import com.court_booking_project.court_booking_server.exception.AppException;
 import com.court_booking_project.court_booking_server.exception.ErrorCode;
 import com.court_booking_project.court_booking_server.mapper.UserMapper;
@@ -19,6 +23,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Date;
 import java.util.List;
@@ -33,6 +38,7 @@ public class UserServiceImpl implements IUserService {
     UserMapper userMapper;
     RoleServiceImpl roleServiceImpl;
     PasswordEncoder passwordEncoder;
+    MediaService mediaService;
 
     @Override
     public UserResponse add(CreateUserRequest createUserRequest) {
@@ -44,7 +50,7 @@ public class UserServiceImpl implements IUserService {
         User user = userMapper.toUser(createUserRequest);
         user.setCreatedAt(Date.from(java.time.Instant.now()));
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-
+        user.setProfileImage(InitialResources.getRandomUrl());
         Role userRole = roleServiceImpl.getByName(PredefineRole.USER_ROLE);
         user.setRole(userRole);
 
@@ -67,11 +73,11 @@ public class UserServiceImpl implements IUserService {
         var context = SecurityContextHolder.getContext();
 
         String email = context.getAuthentication().getName();
-        log.info("Email: {}", email);
+
         var user = userRepository.findByEmail(email);
 
         if(user.isEmpty())
-            throw new AppException(ErrorCode.UNAUTHORIZED);
+            throw new AppException(ErrorCode.UNAUTHENTICATED);
 
         return userMapper.toUserResponse(user.get());
     }
@@ -96,14 +102,33 @@ public class UserServiceImpl implements IUserService {
 
 
     @Override
-    public UserResponse update(String id, User user) {
+    public UserResponse update(String id, UpdateUserRequest updateUserRequest) {
         var userEntity = userRepository.findById(id);
 
         if (userEntity.isEmpty())
             throw new AppException(ErrorCode.USER_NOT_EXISTED);
 
+        userMapper.updateUser(userEntity.get(), updateUserRequest);
+
         userRepository.save(userEntity.get());
         return userMapper.toUserResponse(userEntity.get());
+    }
+
+    @Override
+    public UserResponse updateProfilePicture(String id, MultipartFile imageFile) {
+        var user = userRepository.findById(id);
+
+        if(user.isEmpty()) throw new AppException(ErrorCode.USER_NOT_EXISTED);
+
+        CloudinaryResponse cloudinaryResponse = mediaService.uploadMedia(imageFile, CloudinaryFolder.profile);
+
+        if(cloudinaryResponse == null) throw new AppException(ErrorCode.UPLOAD_FILE_FAILED);
+
+        user.get().setProfileImage(cloudinaryResponse.getUrl());
+
+        userRepository.save(user.get());
+
+        return userMapper.toUserResponse(user.get());
     }
 
 }

@@ -21,6 +21,7 @@ import com.court_booking_project.court_booking_server.utils.momo.CreateSignature
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -46,6 +47,20 @@ public class ReservationServiceImpl implements IReservationService {
     @Override
     public List<ReservationResponse> getAll() {
         return reservationRepository.findAll().stream().map(reservationMapper::convertEntityToResponse).toList();
+    }
+
+    @Override
+    public List<ReservationResponse> getMyReservations() {
+        var context = SecurityContextHolder.getContext();
+
+        String email = context.getAuthentication().getName();
+
+        var user = userRepository.findByEmail(email);
+
+        if  (user.isEmpty())
+            throw new AppException(ErrorCode.UNAUTHENTICATED);
+
+        return reservationRepository.findByUserOrderByCreatedAt(user.get()).stream().map(reservationMapper::convertEntityToResponse).toList();
     }
 
     @Override
