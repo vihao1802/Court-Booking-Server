@@ -42,6 +42,8 @@ public enum ErrorCode {
     NOT_FOUND_COURT_ID(1028, "courtId not found", HttpStatus.NOT_FOUND),
     NOT_FOUND_USER_ID(1029, "userId not found", HttpStatus.NOT_FOUND),
     NOT_FOUND_RESERVATION_ID(1030,"reservationId not found", HttpStatus.NOT_FOUND),
+    INVALID_PAYMENT_METHOD(1031,"Invalid paymentMethod", HttpStatus.BAD_REQUEST),
+    INVALID_RESERVATION_STATE(1032, "Invalid reservation state", HttpStatus.BAD_REQUEST);
     ;
 
     ErrorCode(int code, String message, HttpStatusCode httpStatusCode) {
