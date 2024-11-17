@@ -3,7 +3,9 @@ package com.court_booking_project.court_booking_server.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.UuidGenerator;
+import org.hibernate.annotations.ValueGenerationType;
 
 import java.util.List;
 
