@@ -65,7 +65,7 @@ public class ReservationController {
 
     @PostMapping("/{id}/payment/zalo-pay")
     public ResponseEntity<?> createPaymentZaloPay( @PathVariable String id) throws Exception {
-        return ResponseEntity.status(HttpStatus.OK).body(zalPayService.createPaymentZaloPay(id));
+        return zalPayService.createPaymentZaloPay(id);
     }
 
     @PostMapping("/{id}/zalo-pay/callback")
