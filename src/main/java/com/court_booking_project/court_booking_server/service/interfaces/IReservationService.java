@@ -13,6 +13,7 @@ import java.util.List;
 public interface IReservationService {
     ReservationResponse get(String id);
     List<ReservationResponse> getAll();
+    List<ReservationResponse> getMyReservations();
     ReservationResponse add(CreateReservationRequest request);
     ReservationResponse update(String id,UpdateReservationRequest request);
     MomoCreatePaymentDTO createPaymentMomo (String id, MomoRequestCreatePaymentDTO request);

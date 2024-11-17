@@ -8,14 +8,14 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 
 @SpringBootApplication
-@EnableConfigurationProperties(ZaloPayConfig.class)
 @Slf4j
+@EnableConfigurationProperties(ZaloPayConfig.class)
 public class CourtBookingServerApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(CourtBookingServerApplication.class, args);
 	}
 	@PostConstruct
 	public void printSwaggerUrl() {
-		log.info("Swagger UI available at: http://localhost:8080/swagger-ui/index.html");
+		log.info("Swagger URL: http://localhost:8080/api/swagger-ui.html");
 	}
 }

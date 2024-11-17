@@ -42,6 +42,10 @@ public enum ErrorCode {
     NOT_FOUND_COURT_ID(1028, "courtId not found", HttpStatus.NOT_FOUND),
     NOT_FOUND_USER_ID(1029, "userId not found", HttpStatus.NOT_FOUND),
     NOT_FOUND_RESERVATION_ID(1030,"reservationId not found", HttpStatus.NOT_FOUND),
+    UPLOAD_FILE_FAILED(1031,"upload file failed", HttpStatus.INTERNAL_SERVER_ERROR),
+    FILE_IS_EMPTY(1031,"file empty", HttpStatus.BAD_REQUEST),
+    INVALID_FILE(1031,"invalid file", HttpStatus.BAD_REQUEST),
+    DELETE_FILE_FAILED(1031,"delete file failed", HttpStatus.BAD_REQUEST),
     ;
 
     ErrorCode(int code, String message, HttpStatusCode httpStatusCode) {

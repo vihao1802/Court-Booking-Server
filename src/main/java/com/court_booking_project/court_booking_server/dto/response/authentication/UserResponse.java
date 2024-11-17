@@ -15,6 +15,7 @@ public class UserResponse {
     String userName;
     String email;
     String phoneNumber;
+    String profileImage;
     Date dayOfBirth;
     Date createdAt;
     String location;

@@ -38,6 +38,9 @@ public class User {
     @Column(name = "day_of_birth")
     LocalDate dayOfBirth;
 
+    @Column(name="profile_image",nullable = false)
+    String profileImage;
+
     @Column(name = "created_at")
     Date createdAt;
 
