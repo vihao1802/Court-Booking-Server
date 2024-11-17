@@ -8,6 +8,8 @@ import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,8 +23,11 @@ public class CourtController {
     CourtServiceImpl courtService;
 
     @GetMapping
-    public List<CourtResponse> getAllCourts() {
-        return courtService.getAll();
+    public List<CourtResponse> getAllCourts() { return  courtService.getAll(); }
+
+    @GetMapping("/type/{typeId}")
+        public Page<CourtResponse> getCourtsByType(@PathVariable String typeId, Pageable pageable) {
+        return courtService.getCourtsByType(typeId, pageable);
     }
 
     @GetMapping("/{id}")
