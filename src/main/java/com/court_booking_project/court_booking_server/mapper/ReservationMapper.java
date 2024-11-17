@@ -1,5 +1,6 @@
 package com.court_booking_project.court_booking_server.mapper;
 
+import com.court_booking_project.court_booking_server.constant.PaymentMethod;
 import com.court_booking_project.court_booking_server.constant.ReservationState;
 import com.court_booking_project.court_booking_server.dto.request.reservation.CreateReservationRequest;
 import com.court_booking_project.court_booking_server.dto.request.reservation.UpdateReservationRequest;
@@ -19,10 +20,10 @@ public interface ReservationMapper {
     @Mapping(source = "checkInTime", target = "checkInTime", qualifiedByName = "stringToDateTime")
     @Mapping(source = "checkOutTime", target = "checkOutTime", qualifiedByName = "stringToDateTime")
     @Mapping(source = "reservationDate", target = "reservationDate", qualifiedByName = "stringToDateTime")
-//    @Mapping(source = "reservationState", target = "reservationState", qualifiedByName = "intToReservationState")
     Reservation convertCreateDTOtoEntity(CreateReservationRequest request);
 
     @Mapping(source = "reservationState", target = "reservationState", qualifiedByName = "intToReservationState")
+    @Mapping(source = "paymentMethod", target = "paymentMethod", qualifiedByName = "stringToPaymentMethod")
     void convertUpdateDTOtoEntity(@MappingTarget Reservation reservation, UpdateReservationRequest request);
 
     @Mapping(source = "court.id",target = "courtId")
@@ -39,7 +40,12 @@ public interface ReservationMapper {
     }
 
     @Named("intToReservationState")
-    default ReservationState mapIntegerToReservationState(Integer state) {
-        return ReservationState.values()[state];
+    default ReservationState intToReservationState(Integer stateCode) {
+        return ReservationState.fromCode(stateCode);
+    }
+
+    @Named("stringToPaymentMethod")
+    default PaymentMethod stringToPaymentMethod(String paymentMethod) {
+        return PaymentMethod.fromString(paymentMethod);
     }
 }

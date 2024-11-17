@@ -13,9 +13,10 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class UpdateReservationRequest {
 
-    @NotEmpty(message = "INVALID_RESERVATION_STATE")
+    @NotNull(message = "INVALID_RESERVATION_STATE")
     Integer reservationState;
 
-    @NotEmpty(message = "")
-    String paymentMethodId;
+    @NotEmpty(message = "INVALID_PAYMENT_METHOD")
+    String paymentMethod;
+
 }

@@ -41,7 +41,7 @@ public class ReservationServiceImpl implements IReservationService {
 
     @Override
     public ReservationResponse get(String id) {
-        return reservationRepository.findById(id).map(reservationMapper::convertEntityToResponse).orElseThrow(() -> new RuntimeException("reservation not found"));
+        return reservationRepository.findById(id).map(reservationMapper::convertEntityToResponse).orElseThrow(() -> new AppException(ErrorCode.NOT_FOUND_RESERVATION_ID));
     }
 
     @Override
@@ -85,14 +85,15 @@ public class ReservationServiceImpl implements IReservationService {
 
     @Override
     public ReservationResponse update(String id, UpdateReservationRequest request) {
-        Reservation reservation = reservationRepository.findById(id).orElseThrow(() -> new RuntimeException("reservation not found"));
+        Reservation reservation = reservationRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.NOT_FOUND_RESERVATION_ID));
+//        System.out.println("reser: " + reservation.getId());
         reservationMapper.convertUpdateDTOtoEntity(reservation,request);
         reservationRepository.save(reservation);
         return reservationMapper.convertEntityToResponse(reservation);
     }
 
     public MomoCreatePaymentDTO createPaymentMomo (String id, MomoRequestCreatePaymentDTO request) {
-        Reservation reservation = reservationRepository.findById(id).orElseThrow(() -> new RuntimeException("Reservation not found"));
+        Reservation reservation = reservationRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.NOT_FOUND_RESERVATION_ID));
         try {
             return momoService.createPayment(reservation, request);
         } catch (Exception ex) {

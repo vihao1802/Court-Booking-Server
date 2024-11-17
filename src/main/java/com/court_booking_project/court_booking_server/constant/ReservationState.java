@@ -1,5 +1,7 @@
 package com.court_booking_project.court_booking_server.constant;
 
+import com.court_booking_project.court_booking_server.exception.AppException;
+import com.court_booking_project.court_booking_server.exception.ErrorCode;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,7 +23,7 @@ public enum ReservationState {
                 return state;
             }
         }
-        throw new IllegalArgumentException("Invalid code for ReservationState: " + code);
+        throw new AppException(ErrorCode.INVALID_RESERVATION_STATE);
     }
 }
 
