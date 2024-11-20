@@ -32,8 +32,16 @@ import java.util.Arrays;
 @EnableWebSecurity
 @EnableMethodSecurity
 public class SecurityConfig  {
-    private final String[] PUBLIC_ENDPOINTS = {
-             "api/v1/auth/login", "api/v1/auth/introspect", "api/v1/auth/refresh-token","api/v1/auth/logout"
+    private final String[] PUBLIC_ENDPOINTS_POST_METHOD = {
+            "api/v1/auth/login",
+            "api/v1/auth/introspect",
+            "api/v1/auth/refresh-token",
+            "api/v1/auth/logout",
+            "api/v1/users/register",
+    };
+    private final String[] PUBLIC_ENDPOINTS_GET_METHOD = {
+            "api/v1/court-types/**",
+            "api/v1/courts/**",
     };
 
     @Autowired
@@ -41,8 +49,9 @@ public class SecurityConfig  {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity.authorizeHttpRequests(request -> request.requestMatchers(HttpMethod.POST, PUBLIC_ENDPOINTS)
-                .permitAll()
+        httpSecurity.authorizeHttpRequests(request -> request.requestMatchers(HttpMethod.POST, PUBLIC_ENDPOINTS_POST_METHOD)
+                .permitAll().requestMatchers(HttpMethod.GET,PUBLIC_ENDPOINTS_GET_METHOD).permitAll()
+                .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
                 .anyRequest()
                 .authenticated());
 
