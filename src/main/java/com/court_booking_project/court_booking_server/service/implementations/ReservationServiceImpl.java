@@ -86,10 +86,13 @@ public class ReservationServiceImpl implements IReservationService {
     @Override
     public ReservationResponse update(String id, UpdateReservationRequest request) {
         Reservation reservation = reservationRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.NOT_FOUND_RESERVATION_ID));
-//        System.out.println("reser: " + reservation.getId());
-        reservationMapper.convertUpdateDTOtoEntity(reservation,request);
-        reservationRepository.save(reservation);
-        return reservationMapper.convertEntityToResponse(reservation);
+        try {
+            reservationMapper.convertUpdateDTOtoEntity(reservation, request);
+            reservationRepository.save(reservation);
+            return reservationMapper.convertEntityToResponse(reservation);
+        } catch (Exception e) {
+            throw new AppException(ErrorCode.NOT_FOUND_PAYMENT_METHOD);
+        }
     }
 
     public MomoCreatePaymentDTO createPaymentMomo (String id, MomoRequestCreatePaymentDTO request) {

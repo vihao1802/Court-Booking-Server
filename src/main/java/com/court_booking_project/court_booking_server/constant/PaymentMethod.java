@@ -14,7 +14,7 @@ public enum PaymentMethod {
     ZALOPAY,
     MOMO,
     CASH,
-    NONE;
+    NO;
 
     public static PaymentMethod fromString(String method) {
         for (PaymentMethod paymentMethod : PaymentMethod.values()) {
