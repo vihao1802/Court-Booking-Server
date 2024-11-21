@@ -1,6 +1,8 @@
 package com.court_booking_project.court_booking_server.dto.response.court;
 
 import com.court_booking_project.court_booking_server.dto.response.courtImage.CourtImageResponse;
+import com.court_booking_project.court_booking_server.dto.response.courtType.CourtTypeResponse;
+import com.court_booking_project.court_booking_server.entity.CourtType;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -25,5 +27,6 @@ public class CourtResponse {
     int minimumRentalTime;
     int maximumRentalTime;
     String courtTypeId;
+    CourtTypeResponse courtType;
     List<CourtImageResponse> courtImageList;
 }

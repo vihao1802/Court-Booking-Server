@@ -38,6 +38,8 @@ public class ApplicationInitConfig {
                         .email("admin@admin.com")
                         .role(roleRepository.findByRoleName("ADMIN"))
                         .password(passwordEncoder.encode("admin"))
+                        .phoneNumber("0123456789")
+                        .createdAt(java.util.Date.from(java.time.Instant.now()))
                         .profileImage("https://res.cloudinary.com/dxlnrizu7/image/upload/v1728888785/cld-sample-5.jpg")
                         .build();
                 userRepository.save(newAdmin);
