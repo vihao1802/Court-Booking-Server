@@ -25,10 +25,10 @@ public class Reservation {
     String id;
 
     @Column(name = "check_in_time",nullable = false)
-    Date checkInTime;
+    String checkInTime;
 
     @Column(name = "check_out_time", nullable = false)
-    Date checkOutTime;
+    String checkOutTime;
 
     @Column(name = "total_price",nullable = false)
     long totalPrice;

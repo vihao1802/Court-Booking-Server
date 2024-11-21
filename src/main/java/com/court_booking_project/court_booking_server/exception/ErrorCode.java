@@ -23,7 +23,7 @@ public enum ErrorCode {
     EMPTY_COURT_NAME(1009, "courtName cannot be empty", HttpStatus.BAD_REQUEST),
     EMPTY_COURT_DESCRIPTION(1010, "courtDescription cannot be empty", HttpStatus.BAD_REQUEST),
     EMPTY_ADDRESS(1011, "courtAddress cannot be empty", HttpStatus.BAD_REQUEST),
-    REQUIRED_RENTAL_PRICE_PEtR_HOUR(1012, "rentalPricePerHour cannot be empty", HttpStatus.BAD_REQUEST),
+    REQUIRED_RENTAL_PRICE_PER_HOUR(1012, "rentalPricePerHour cannot be empty", HttpStatus.BAD_REQUEST),
     INVALID_RENTAL_PRICE_PER_HOUR(1013, "rentalPricePerHour must be greater than 0", HttpStatus.BAD_REQUEST),
     REQUIRED_MINIMUM_RENTAL_TIME(1014, "minimumRentalTime cannot be empty", HttpStatus.BAD_REQUEST),
     INVALID_MINIMUM_RENTAL_TIME(1015, "minimumRentalTime must be greater than 0", HttpStatus.BAD_REQUEST),
@@ -49,6 +49,7 @@ public enum ErrorCode {
     INVALID_PAYMENT_METHOD(1031,"Invalid paymentMethod", HttpStatus.BAD_REQUEST),
     INVALID_RESERVATION_STATE(1032, "Invalid reservation state", HttpStatus.BAD_REQUEST),
     EMPTY_IMAGE_TYPE(1033, "imageType cannot be empty", HttpStatus.BAD_REQUEST),
+    NOT_FOUND_PAYMENT_METHOD(1033,"Payment method not found", HttpStatus.NOT_FOUND)
     ;
 
     ErrorCode(int code, String message, HttpStatusCode httpStatusCode) {

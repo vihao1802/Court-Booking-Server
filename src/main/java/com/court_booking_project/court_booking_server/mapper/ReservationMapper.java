@@ -17,8 +17,6 @@ import java.util.Date;
 
 @Mapper(componentModel = "spring")
 public interface ReservationMapper {
-    @Mapping(source = "checkInTime", target = "checkInTime", qualifiedByName = "stringToDateTime")
-    @Mapping(source = "checkOutTime", target = "checkOutTime", qualifiedByName = "stringToDateTime")
     @Mapping(source = "reservationDate", target = "reservationDate", qualifiedByName = "stringToDateTime")
     Reservation convertCreateDTOtoEntity(CreateReservationRequest request);
 
@@ -26,16 +24,16 @@ public interface ReservationMapper {
     @Mapping(source = "paymentMethod", target = "paymentMethod", qualifiedByName = "stringToPaymentMethod")
     void convertUpdateDTOtoEntity(@MappingTarget Reservation reservation, UpdateReservationRequest request);
 
-    @Mapping(source = "court.id",target = "courtId")
-    @Mapping(source = "user.id",target = "userId")
+    @Mapping(source = "court",target = "court")
+    @Mapping(source = "user",target = "user")
     ReservationResponse convertEntityToResponse(Reservation entity);
 
     @Named("stringToDateTime")
     default Date mapStringToDateTime(String date) {
         try {
-            return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").parse(date);
+            return new SimpleDateFormat("yyyy-MM-dd").parse(date);
         } catch (ParseException e) {
-            throw new IllegalArgumentException("Invalid date format, expected ISO 8601 format yyyy-MM-dd'T'HH:mm:ss", e);
+            throw new IllegalArgumentException("Invalid date format, expected ISO 8601 format yyyy-MM-dd", e);
         }
     }
 
