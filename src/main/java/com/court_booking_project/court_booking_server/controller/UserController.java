@@ -3,6 +3,7 @@ package com.court_booking_project.court_booking_server.controller;
 import com.cloudinary.Cloudinary;
 import com.court_booking_project.court_booking_server.constant.CloudinaryFolder;
 import com.court_booking_project.court_booking_server.dto.request.authentication.CreateUserRequest;
+import com.court_booking_project.court_booking_server.dto.request.user.DisableUserRequest;
 import com.court_booking_project.court_booking_server.dto.request.user.UpdateUserRequest;
 import com.court_booking_project.court_booking_server.dto.response.CloudinaryResponse;
 import com.court_booking_project.court_booking_server.dto.response.authentication.UserResponse;
@@ -46,8 +47,8 @@ public class UserController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping ("/users/paginated")
-    public Page<User> getUsers(Pageable pageable) {
-        return userService.getUsers(pageable);
+    public Page<User> getUsers(@RequestParam(value = "search", required = false) String keyword,Pageable pageable) {
+        return userService.getUsers(keyword,pageable);
     }
 
     @GetMapping("/users/{id}")
@@ -69,13 +70,15 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 
-
-
     @PutMapping("/users/{id}/update/profile-image")
     public ResponseEntity<UserResponse> uploadImage(@PathVariable("id") String id, @RequestParam MultipartFile imageFile) {
 
         return new ResponseEntity<UserResponse>(userService.updateProfilePicture(id,imageFile), HttpStatus.OK);
     }
 
+    @PutMapping ("/users/{id}/disable-user")
+    public ResponseEntity<UserResponse> disableUser(@PathVariable String id, @RequestBody DisableUserRequest disableUserRequest) {
+        return  new ResponseEntity<UserResponse>(userService.disableUser(id, disableUserRequest),HttpStatus.OK);
+    }
 
 }

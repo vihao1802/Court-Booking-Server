@@ -5,21 +5,23 @@ import com.court_booking_project.court_booking_server.dto.request.momo.MomoCreat
 import com.court_booking_project.court_booking_server.dto.request.momo.MomoRequestCreatePaymentDTO;
 import com.court_booking_project.court_booking_server.dto.request.reservation.CreateReservationRequest;
 import com.court_booking_project.court_booking_server.dto.request.reservation.UpdateReservationRequest;
-import com.court_booking_project.court_booking_server.dto.request.zalopay.ZaloPayRequestCreatePaymentDTO;
 import com.court_booking_project.court_booking_server.dto.request.zalopay.ZaloPayCallBackDTO;
-import com.court_booking_project.court_booking_server.dto.response.ApiResponse;
 import com.court_booking_project.court_booking_server.dto.response.reservation.ReservationResponse;
+import com.court_booking_project.court_booking_server.entity.Reservation;
 import com.court_booking_project.court_booking_server.service.implementations.ZaloPayService;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.apache.coyote.Response;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.court_booking_project.court_booking_server.service.implementations.ReservationServiceImpl;
 
+import java.util.Date;
 import java.util.List;
 
 
@@ -45,6 +47,16 @@ public class ReservationController {
     public ResponseEntity<List<ReservationResponse>> getMyReservations() {
         return  new ResponseEntity<>(reservationService.getMyReservations(), HttpStatus.OK);
     }
+
+    @GetMapping("/paginated")
+    public Page<ReservationResponse> getPaginatedReservations(@RequestParam(name="search", required = false) String search,
+                                                      @RequestParam(name = "from", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date fromDate,
+                                                      @RequestParam(name = "to", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date toDate,
+                                                              Pageable pageable) {
+
+       return reservationService.findFilteredReservations(search, fromDate, toDate, pageable);
+    }
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ReservationResponse addCourt(@RequestBody @Valid CreateReservationRequest request) {
