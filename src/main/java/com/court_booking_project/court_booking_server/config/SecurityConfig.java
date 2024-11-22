@@ -38,6 +38,8 @@ public class SecurityConfig  {
             "api/v1/auth/refresh-token",
             "api/v1/auth/logout",
             "api/v1/users/register",
+            "api/v1/reservations/*/zalo-pay/callback",
+            "api/v1/reservations/*/momo-callback"
     };
     private final String[] PUBLIC_ENDPOINTS_GET_METHOD = {
             "api/v1/court-types/**",
@@ -68,7 +70,7 @@ public class SecurityConfig  {
     @Bean
     JwtAuthenticationConverter jwtAuthenticationConverter() {
         JwtGrantedAuthoritiesConverter jwtGrantedAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();
-        jwtGrantedAuthoritiesConverter.setAuthorityPrefix("");
+        jwtGrantedAuthoritiesConverter.setAuthorityPrefix("ROLE_");
 
         JwtAuthenticationConverter jwtAuthenticationConverter = new JwtAuthenticationConverter();
         jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(jwtGrantedAuthoritiesConverter);
