@@ -5,16 +5,13 @@ import com.court_booking_project.court_booking_server.dto.request.momo.MomoCreat
 import com.court_booking_project.court_booking_server.dto.request.momo.MomoRequestCreatePaymentDTO;
 import com.court_booking_project.court_booking_server.dto.request.reservation.CreateReservationRequest;
 import com.court_booking_project.court_booking_server.dto.request.reservation.UpdateReservationRequest;
-import com.court_booking_project.court_booking_server.dto.request.zalopay.ZaloPayRequestCreatePaymentDTO;
 import com.court_booking_project.court_booking_server.dto.request.zalopay.ZaloPayCallBackDTO;
-import com.court_booking_project.court_booking_server.dto.response.ApiResponse;
 import com.court_booking_project.court_booking_server.dto.response.reservation.ReservationResponse;
 import com.court_booking_project.court_booking_server.service.implementations.ZaloPayService;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -47,12 +44,12 @@ public class ReservationController {
     }
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ReservationResponse addCourt(@RequestBody @Valid CreateReservationRequest request) {
+    public ReservationResponse addReservation(@RequestBody @Valid CreateReservationRequest request) {
         return reservationService.add(request);
     }
 
     @PutMapping("/{id}")
-    public ReservationResponse updateCourt(@PathVariable String id,@RequestBody @Valid UpdateReservationRequest request) {
+    public ReservationResponse updateReservation(@PathVariable String id, @RequestBody @Valid UpdateReservationRequest request) {
         return reservationService.update(id, request);
     }
 
