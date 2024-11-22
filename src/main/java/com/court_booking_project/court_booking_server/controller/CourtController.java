@@ -12,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -33,6 +34,16 @@ public class CourtController {
     @GetMapping("/{id}")
     public CourtResponse getCourt(@PathVariable String id) {
         return courtService.get(id);
+    }
+
+    @GetMapping("/{id}/get-available-date")
+    public List<String> getAvailableDate(@PathVariable String id) {
+        return courtService.getAvailableDate(id);
+    }
+
+    @GetMapping("/{id}/get-unavailable-hours")
+    public List<String> getUnavailableHours(@PathVariable String id,@RequestParam(name = "date") String date) {
+        return courtService.getUnavailableHours(id,date);
     }
 
     @PostMapping
