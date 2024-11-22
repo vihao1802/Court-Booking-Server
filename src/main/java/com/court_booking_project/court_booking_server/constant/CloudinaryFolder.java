@@ -6,5 +6,6 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum CloudinaryFolder {
-    profile
+    profile,
+    court
 }

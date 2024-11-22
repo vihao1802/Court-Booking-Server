@@ -26,6 +26,8 @@
 <!-- ### 📄 PDF: <a href="" target="_blank">Link</a> -->
 <!-- ### 📄 Slide: <a href="" target="_blank">Link</a> -->
 
+## 🎉 Tech Stack
+
 <!-- GETTING STARTED -->
 
 ## 🎯 Getting Started
@@ -36,6 +38,8 @@
 - You should create a `main` directory to wrap 2 repo (client and server) of this system
 - <a href="http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html" target="_blank">JDK >= 17</a>
 - <a href="https://maven.apache.org/" target="_blank">Maven 3.0.0</a>
+- <a href="https://nodejs.org/en" target="_blank">node >= 22</a>
+- npm(comes with node)
 
 ### ⚙️ Installation
 
@@ -48,7 +52,20 @@ git clone https://github.com/vihao1802/Court-Booking-Client.git
 git clone https://github.com/vihao1802/Court-Booking-Server.git
 ```
 
-2. Create file `application.properties` in folder `src/main/resources` with format:
+2. Install libraries and dependencies (For client folder):
+```
+cd client
+```
+```
+npm install
+```
+
+3. Create file `.env.local` in folder `client`:
+```env
+NEXT_PUBLIC_BACKEND_URL=http://localhost:8080/api/v1
+```
+
+4. Create file `application.properties` in folder `src/main/resources` with format:
 
 ```env
 spring.application.name=court-booking-server

@@ -42,7 +42,4 @@ public class CreateCourtRequest {
     @NotNull(message = "INVALID_COURT_TYPE_ID")
     @NotEmpty(message = "EMPTY_COURT_TYPE_ID")
     String courtTypeId;
-
-    @Valid
-    List<@NotNull CreateCourtImageRequest> courtImageList;
 }

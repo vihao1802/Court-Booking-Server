@@ -1,8 +1,14 @@
 package com.court_booking_project.court_booking_server.service.implementations;
 
+import com.court_booking_project.court_booking_server.constant.CloudinaryFolder;
+import com.court_booking_project.court_booking_server.controller.CourtController;
 import com.court_booking_project.court_booking_server.constant.ReservationState;
 import com.court_booking_project.court_booking_server.dto.request.court.CreateCourtRequest;
 import com.court_booking_project.court_booking_server.dto.request.court.UpdateCourtRequest;
+import com.court_booking_project.court_booking_server.dto.request.court_image.CourtImageRequest;
+import com.court_booking_project.court_booking_server.dto.request.court_image.CreateCourtImageRequest;
+import com.court_booking_project.court_booking_server.dto.request.court_image.UpdateCourtImageRequest;
+import com.court_booking_project.court_booking_server.dto.response.CloudinaryResponse;
 import com.court_booking_project.court_booking_server.dto.response.court.CourtResponse;
 import com.court_booking_project.court_booking_server.entity.Court;
 import com.court_booking_project.court_booking_server.entity.CourtImage;
@@ -23,9 +29,14 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -37,6 +48,7 @@ public class CourtServiceImpl implements ICourtService {
     ICourtTypeRepository courtTypeRepository;
     ICourtImageRepository courtImageRepository;
     IReservationRepository reservationRepository;
+    MediaService mediaService;
     CourtMapper courtMapper;
 
     @Override
@@ -64,17 +76,6 @@ public class CourtServiceImpl implements ICourtService {
         Court court = courtMapper.convertCreateDTOtoEntity(request);
         court.setCourtType(courtType.get());
 
-        List<CourtImage> courtImages = request.getCourtImageList().stream()
-                .map(imageRequest -> {
-                    CourtImage courtImage = new CourtImage();
-                    courtImage.setCourtImageSrc(imageRequest.getCourtImageSrc());
-                    courtImage.setImageType(imageRequest.getImageType());
-                    courtImage.setCourt(court);
-                    return courtImage;
-                }).toList();
-
-        court.setCourtImageList(courtImages);
-
         courtRepository.save(court);
         return courtMapper.convertEntityToDTO(court);
     }
@@ -88,9 +89,27 @@ public class CourtServiceImpl implements ICourtService {
     }
 
     @Override
+    @Transactional
+    public CourtResponse creatCourtImageList(String courtId, CreateCourtImageRequest requests) {
+        Court court = courtRepository.findById(courtId).orElseThrow(() -> new RuntimeException("Court not found"));
+
+        List<CourtImage> imageList = requests.getCourtImages().stream().map(imageRequest -> {
+            CloudinaryResponse cloudinaryResponse = mediaService.uploadMedia(imageRequest.getCourtImageSrc(), CloudinaryFolder.court);
+            CourtImage courtImage = new CourtImage();
+            courtImage.setCourtImageSrc(cloudinaryResponse.getUrl());
+            courtImage.setImageType(imageRequest.getImageType());
+            courtImage.setCourt(court);
+            return courtImage;
+        }).collect(Collectors.toList());
+
+        court.setCourtImageList(imageList);
+        courtRepository.save(court);
+        return courtMapper.convertEntityToDTO(court);
+    }
+    @Override
     public List<String> getAvailableDate(String courtId) {
         List<String> availableDays = new ArrayList<>();
-        
+
         LocalDate today = LocalDate.now();
         int lastDayOfRange = 3; // range day is 3 from now
 
@@ -100,7 +119,7 @@ public class CourtServiceImpl implements ICourtService {
                 availableDays.add(date.toString());
             }
         }
-        
+
         return availableDays;
     }
 

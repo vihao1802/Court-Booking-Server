@@ -1,6 +1,6 @@
 package com.court_booking_project.court_booking_server.controller;
 
-import com.court_booking_project.court_booking_server.dto.request.court_image.CreateCourtImageRequest;
+import com.court_booking_project.court_booking_server.dto.request.court_image.CourtImageFileRequest;
 import com.court_booking_project.court_booking_server.dto.request.court_image.UpdateCourtImageRequest;
 import com.court_booking_project.court_booking_server.dto.response.courtImage.CourtImageResponse;
 import com.court_booking_project.court_booking_server.service.implementations.CourtImageServiceImpl;
@@ -30,13 +30,8 @@ public class CourtImageController {
         return courtImageService.get(id);
     }
 
-    /*@PostMapping
-    public CourtImageResponse createCourtImage(@RequestBody @Valid CreateCourtImageRequest request) {
-        return courtImageService.add(request);
-    }*/
-
     @PutMapping("/{id}")
-    public CourtImageResponse updateCourtImage(@PathVariable String id, @RequestBody @Valid UpdateCourtImageRequest request) {
+    public CourtImageResponse updateCourtImage(@PathVariable String id,@ModelAttribute @Valid CourtImageFileRequest request) {
         return courtImageService.update(id, request);
     }
 }

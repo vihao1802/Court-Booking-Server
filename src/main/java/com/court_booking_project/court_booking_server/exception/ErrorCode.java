@@ -49,7 +49,8 @@ public enum ErrorCode {
     INVALID_PAYMENT_METHOD(1031,"Invalid paymentMethod", HttpStatus.BAD_REQUEST),
     INVALID_RESERVATION_STATE(1032, "Invalid reservation state", HttpStatus.BAD_REQUEST),
     NOT_FOUND_PAYMENT_METHOD(1033,"Payment method not found", HttpStatus.NOT_FOUND),
-    INVALID_CREATED_AT(1034,"Invalid Created at",HttpStatus.BAD_REQUEST)
+    INVALID_CREATED_AT(1034,"Invalid Created at",HttpStatus.BAD_REQUEST),
+    EMPTY_IMAGE_TYPE(1033, "imageType cannot be empty", HttpStatus.BAD_REQUEST),
     ;
 
     ErrorCode(int code, String message, HttpStatusCode httpStatusCode) {
