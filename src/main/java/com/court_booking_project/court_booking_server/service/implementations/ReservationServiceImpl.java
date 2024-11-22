@@ -21,9 +21,13 @@ import com.court_booking_project.court_booking_server.utils.momo.CreateSignature
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.query.Param;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -61,6 +65,14 @@ public class ReservationServiceImpl implements IReservationService {
             throw new AppException(ErrorCode.UNAUTHENTICATED);
 
         return reservationRepository.findByUserOrderByCreatedAt(user.get()).stream().map(reservationMapper::convertEntityToResponse).toList();
+    }
+
+    @Override
+    public Page<ReservationResponse> findFilteredReservations(String search, Date fromDate, Date toDate, Pageable pageable) {
+
+        Page<Reservation> reservationPage =  reservationRepository.findFilteredReservations(search, fromDate, toDate, pageable);
+
+        return reservationPage.map(reservationMapper::convertEntityToResponse);
     }
 
     @Override

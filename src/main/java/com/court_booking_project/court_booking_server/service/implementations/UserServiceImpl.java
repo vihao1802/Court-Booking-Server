@@ -3,6 +3,7 @@ package com.court_booking_project.court_booking_server.service.implementations;
 import com.court_booking_project.court_booking_server.constant.CloudinaryFolder;
 import com.court_booking_project.court_booking_server.constant.InitialResources;
 import com.court_booking_project.court_booking_server.constant.PredefineRole;
+import com.court_booking_project.court_booking_server.dto.request.user.DisableUserRequest;
 import com.court_booking_project.court_booking_server.dto.request.user.UpdateUserRequest;
 import com.court_booking_project.court_booking_server.dto.response.CloudinaryResponse;
 import com.court_booking_project.court_booking_server.exception.AppException;
@@ -71,8 +72,8 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public Page<User> getUsers(Pageable pageable) {
-        return userRepository.findAll(pageable);
+    public Page<User> getUsers(String keyword,Pageable pageable) {
+        return userRepository.getUsers(keyword,pageable);
     }
 
     @Override
@@ -138,4 +139,16 @@ public class UserServiceImpl implements IUserService {
         return userMapper.toUserResponse(user.get());
     }
 
+    @Override
+    public UserResponse disableUser(String id, DisableUserRequest isDisable) {
+        var user = userRepository.findById(id);
+
+        if(user.isEmpty()) throw new AppException(ErrorCode.USER_NOT_EXISTED);
+
+        user.get().setIsDisabled(isDisable.getIsDisabled());
+
+        userRepository.save(user.get());
+
+        return userMapper.toUserResponse(user.get());
+    }
 }
