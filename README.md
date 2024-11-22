@@ -150,9 +150,9 @@ npm run dev
 ## ✨ Code Contributors
 
 - This project exists thanks to all the people who contribute.
-  <a href="https://github.com/vihao1802/Court-Booking-Server/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=vihao1802/Court-Booking-Server" />
-  </a>
+<a href="https://github.com/vihao1802/Court-Booking-Server/graphs/contributors">
+<img src="https://contrib.rocks/image?repo=vihao1802/Court-Booking-Server" />
+</a>
 
 Made with [contrib.rocks](https://contrib.rocks).
 
