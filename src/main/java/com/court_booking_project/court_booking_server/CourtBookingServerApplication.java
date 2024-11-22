@@ -16,6 +16,6 @@ public class CourtBookingServerApplication {
 	}
 	@PostConstruct
 	public void printSwaggerUrl() {
-		log.info("Swagger URL: http://localhost:8080/api/swagger-ui.html");
+		log.info("Swagger URL: http://localhost:8080/swagger-ui/index.html");
 	}
 }
