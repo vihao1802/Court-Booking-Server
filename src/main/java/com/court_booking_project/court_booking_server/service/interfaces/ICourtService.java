@@ -19,4 +19,5 @@ public interface ICourtService {
     CourtResponse update(String id, UpdateCourtRequest request);
     List<String> getAvailableDate(String id);
     CourtResponse creatCourtImageList(String id, CreateCourtImageRequest requests);
+    List<String> getUnavailableHours(String id, String date);
 }
