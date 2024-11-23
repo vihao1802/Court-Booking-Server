@@ -34,7 +34,7 @@ public class UserController {
 
     @PostMapping("/users/register")
     public UserResponse Register(@RequestBody @Valid CreateUserRequest createUserRequest) {
-        return  userService.add(createUserRequest);
+        return userService.add(createUserRequest);
     }
 
     @PreAuthorize("hasRole('ADMIN')")

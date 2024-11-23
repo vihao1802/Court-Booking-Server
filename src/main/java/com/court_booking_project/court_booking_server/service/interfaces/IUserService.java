@@ -7,6 +7,7 @@ import com.court_booking_project.court_booking_server.dto.response.authenticatio
 import com.court_booking_project.court_booking_server.entity.User;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Date;
 import java.util.List;
 
 public interface IUserService {
@@ -20,4 +21,5 @@ public interface IUserService {
     UserResponse update(UpdateUserRequest updateUserRequest);
     UserResponse updateProfilePicture(MultipartFile imageFile);
     void updatePassword(UpdatePasswordRequest updatePasswordRequest);
+    Integer getTotalNewUser(Date startDate, Date endDate);
 }

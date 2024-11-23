@@ -148,4 +148,8 @@ public class UserServiceImpl implements IUserService {
     private String getEmailOfContextHolder(){
         return SecurityContextHolder.getContext().getAuthentication().getName();
     }
+
+    public Integer getTotalNewUser(Date startDate, Date endDate) {
+        return userRepository.getTotalNewUser(startDate, endDate);
+    }
 }
