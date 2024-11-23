@@ -3,7 +3,9 @@ package com.court_booking_project.court_booking_server.controller;
 import com.cloudinary.Cloudinary;
 import com.court_booking_project.court_booking_server.constant.CloudinaryFolder;
 import com.court_booking_project.court_booking_server.dto.request.authentication.CreateUserRequest;
+import com.court_booking_project.court_booking_server.dto.request.user.UpdatePasswordRequest;
 import com.court_booking_project.court_booking_server.dto.request.user.DisableUserRequest;
+
 import com.court_booking_project.court_booking_server.dto.request.user.UpdateUserRequest;
 import com.court_booking_project.court_booking_server.dto.response.CloudinaryResponse;
 import com.court_booking_project.court_booking_server.dto.response.authentication.UserResponse;
@@ -36,7 +38,7 @@ public class UserController {
 
     @PostMapping("/users/register")
     public UserResponse Register(@RequestBody @Valid CreateUserRequest createUserRequest) {
-        return  userService.add(createUserRequest);
+        return userService.add(createUserRequest);
     }
 
     @PreAuthorize("hasRole('ADMIN')")
@@ -63,18 +65,22 @@ public class UserController {
         return ResponseEntity.ok(user);
     }
 
-    @PutMapping("/users/{id}/update")
-    public ResponseEntity<String> updateUser(@PathVariable("id") String id,
-                                           @RequestBody UpdateUserRequest updateUserRequest) {
-        userService.update(id,updateUserRequest);
+    @PutMapping("/users/update")
+    public ResponseEntity<String> updateUser(@RequestBody @Valid UpdateUserRequest updateUserRequest) {
+        userService.update(updateUserRequest);
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping("/users/{id}/update/profile-image")
-    public ResponseEntity<UserResponse> uploadImage(@PathVariable("id") String id, @RequestParam MultipartFile imageFile) {
 
-        return new ResponseEntity<UserResponse>(userService.updateProfilePicture(id,imageFile), HttpStatus.OK);
+    @PutMapping("/users/update/profile-image")
+    public ResponseEntity<UserResponse> uploadImage(@RequestParam MultipartFile imageFile) {
+        return new ResponseEntity<UserResponse>(userService.updateProfilePicture(imageFile), HttpStatus.OK);
     }
+
+    @PutMapping("/users/update/password")
+    public ResponseEntity<?> updatePassword(@RequestBody @Valid UpdatePasswordRequest updateUserRequest) {
+        userService.updatePassword(updateUserRequest);
+        return ResponseEntity.noContent().build();
 
     @PutMapping ("/users/{id}/disable-user")
     public ResponseEntity<UserResponse> disableUser(@PathVariable String id, @RequestBody DisableUserRequest disableUserRequest) {

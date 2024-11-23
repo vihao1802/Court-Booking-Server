@@ -6,6 +6,9 @@ import com.court_booking_project.court_booking_server.dto.request.momo.MomoReque
 import com.court_booking_project.court_booking_server.dto.request.reservation.CreateReservationRequest;
 import com.court_booking_project.court_booking_server.dto.request.reservation.UpdateReservationRequest;
 import com.court_booking_project.court_booking_server.dto.response.reservation.ReservationResponse;
+
+import com.court_booking_project.court_booking_server.dto.response.statistic.RevenueByMonthResponse;
+
 import com.court_booking_project.court_booking_server.entity.Reservation;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,4 +26,7 @@ public interface IReservationService {
     ReservationResponse update(String id,UpdateReservationRequest request);
     MomoCreatePaymentDTO createPaymentMomo (String id, MomoRequestCreatePaymentDTO request);
     void handleMomoCallBack(String id, MomoCallbackDTO callbackDto);
+    Integer getTotalBookingHours(Date startDate, Date endDate);
+    Integer getTotalProfit(Date startDate, Date endDate);
+    List<RevenueByMonthResponse> getRevenueByMonths(Date startDate, Date endDate);
 }

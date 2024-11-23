@@ -35,6 +35,9 @@ public class User {
     @Column(name = "phone_number",nullable = false)
     String phoneNumber;
 
+    @Column(name = "gender")
+    Boolean gender = true;
+
     @Column(name = "day_of_birth")
     LocalDate dayOfBirth;
 

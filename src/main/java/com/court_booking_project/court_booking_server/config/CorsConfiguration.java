@@ -11,7 +11,11 @@ public class CorsConfiguration {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(org.springframework.web.servlet.config.annotation.CorsRegistry registry) {
-                registry.addMapping("/**").allowedMethods("GET", "POST", "PUT", "DELETE");
+                registry.addMapping("/**") // Ánh xạ tất cả các URL
+                        .allowedMethods("*") // Cho phép tất cả HTTP methods
+                        .allowedOrigins("*") // Cho phép mọi nguồn gốc
+                        .allowedHeaders("*"); // Cho phép mọi loại header
+
             }
         };
     }
