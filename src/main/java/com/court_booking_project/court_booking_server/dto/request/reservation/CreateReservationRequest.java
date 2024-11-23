@@ -6,6 +6,8 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.time.LocalDateTime;
+
 @Data
 @Builder
 @NoArgsConstructor
@@ -21,6 +23,9 @@ public class CreateReservationRequest {
 
     @NotNull(message = "INVALID_TOTAL_PRICE")
     long totalPrice;
+
+    @NotNull(message = "INVALID_CREATED_AT")
+    LocalDateTime createdAt;
 
     @NotEmpty(message = "INVALID_RESERVATION_DATE")
     String reservationDate;

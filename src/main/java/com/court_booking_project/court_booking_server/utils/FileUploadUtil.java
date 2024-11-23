@@ -3,6 +3,7 @@ package com.court_booking_project.court_booking_server.utils;
 import com.court_booking_project.court_booking_server.exception.AppException;
 import com.court_booking_project.court_booking_server.exception.ErrorCode;
 import lombok.experimental.UtilityClass;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -12,7 +13,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @UtilityClass
+@Slf4j
 public class FileUploadUtil {
+
     public static final long MAX_FILE_SIZE = 2 * 1024 * 1024;
 
     public static final String IMAGE_PATTERN = "([^\\s]+(\\.(?i)(jpg|png|gif|bmp))$)";
@@ -29,12 +32,14 @@ public class FileUploadUtil {
     public static void assertAllowed(MultipartFile file, String pattern) {
         final long size = file.getSize();
         if (size > MAX_FILE_SIZE) {
+            log.error("Hello");
             throw new AppException(ErrorCode.INVALID_FILE);
         }
 
         final String fileName = file.getOriginalFilename();
 //        final String extension = StringUtils.getFilenameExtension(fileName);
         if (!isAllowedExtension(fileName, pattern)) {
+            log.error("Hello 1");
             throw new AppException(ErrorCode.INVALID_FILE);
         }
     }

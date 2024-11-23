@@ -15,7 +15,5 @@ public interface CourtMapper {
 
     void convertUpdateDTOtoEntity(@MappingTarget Court court, UpdateCourtRequest request);
 
-    @Mapping(source = "courtType.id", target = "courtTypeId") // source: argument entity.courtType.id, target: CourtResponse.courtTypeId
-    @Mapping(source = "courtImageList", target = "courtImageList")
     CourtResponse convertEntityToDTO(Court entity) ;
 }

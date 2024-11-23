@@ -8,6 +8,8 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.UuidGenerator;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Data
@@ -25,16 +27,16 @@ public class Reservation {
     String id;
 
     @Column(name = "check_in_time",nullable = false)
-    Date checkInTime;
+    String checkInTime;
 
     @Column(name = "check_out_time", nullable = false)
-    Date checkOutTime;
+    String checkOutTime;
 
     @Column(name = "total_price",nullable = false)
     long totalPrice;
 
     @Column(name = "reservation_date",nullable = false)
-    Date reservationDate;
+    LocalDate reservationDate;
 
     @Enumerated(EnumType.ORDINAL)
     @Column(name = "reservation_state",nullable = false)
@@ -46,7 +48,7 @@ public class Reservation {
     PaymentMethod paymentMethod;
 
     @Column(name = "created_at")
-    Date createdAt;
+    LocalDateTime createdAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "courtId", referencedColumnName = "id", nullable = false)

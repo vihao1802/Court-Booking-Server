@@ -108,12 +108,24 @@ public class ZaloPayService {
 
         JSONObject result = new JSONObject(resultJsonStr.toString());
         Map<String, Object> resultMap = new HashMap<>();
+
+        int res_status = 1; // 1: ok, 2: error
+
         for (String key : result.keySet()) {
             System.out.format("%s = %s\n", key, result.get(key));
+
             resultMap.put(key, result.get(key));
         }
+        if(resultMap.get("return_code").toString().equals("2")) {
+            System.out.println("Hello");
+            res_status = 0;
+        }
+        if(res_status == 1) {
+            return ResponseEntity.ok().body(resultMap);
+        } else {
+            return ResponseEntity.badRequest().body(resultMap);
+        }
 
-        return ResponseEntity.ok().body(resultMap);
     }
 
     public String handleZaloCallback(String id, ZaloPayCallBackDTO jsonStr) throws NoSuchAlgorithmException, InvalidKeyException {

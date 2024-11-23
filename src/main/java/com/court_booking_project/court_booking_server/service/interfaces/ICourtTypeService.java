@@ -9,6 +9,7 @@ import java.util.List;
 
 public interface ICourtTypeService {
     List<CourtTypeResponse> getAll();
+    List<CourtTypeResponse> getActiveCourtTypes(int isDisabled);
     CourtTypeResponse get(String id);
     CourtTypeResponse add(CreateCourtTypeRequest request);
     CourtTypeResponse update(String id, UpdateCourtTypeRequest request);

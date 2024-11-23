@@ -3,7 +3,11 @@ package com.court_booking_project.court_booking_server.service.implementations;
 import com.court_booking_project.court_booking_server.constant.CloudinaryFolder;
 import com.court_booking_project.court_booking_server.constant.InitialResources;
 import com.court_booking_project.court_booking_server.constant.PredefineRole;
+
 import com.court_booking_project.court_booking_server.dto.request.user.UpdatePasswordRequest;
+
+import com.court_booking_project.court_booking_server.dto.request.user.DisableUserRequest;
+
 import com.court_booking_project.court_booking_server.dto.request.user.UpdateUserRequest;
 import com.court_booking_project.court_booking_server.dto.response.CloudinaryResponse;
 import com.court_booking_project.court_booking_server.exception.AppException;
@@ -19,6 +23,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -67,6 +73,11 @@ public class UserServiceImpl implements IUserService {
     @Override
     public List<User> getAll() {
         return userRepository.findAll();
+    }
+
+    @Override
+    public Page<User> getUsers(String keyword,Pageable pageable) {
+        return userRepository.getUsers(keyword,pageable);
     }
 
     @Override
@@ -151,5 +162,17 @@ public class UserServiceImpl implements IUserService {
 
     public Integer getTotalNewUser(Date startDate, Date endDate) {
         return userRepository.getTotalNewUser(startDate, endDate);
+
+    public UserResponse disableUser(String id, DisableUserRequest isDisable) {
+        var user = userRepository.findById(id);
+
+        if(user.isEmpty()) throw new AppException(ErrorCode.USER_NOT_EXISTED);
+
+        user.get().setIsDisabled(isDisable.getIsDisabled());
+
+        userRepository.save(user.get());
+
+        return userMapper.toUserResponse(user.get());
+
     }
 }

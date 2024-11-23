@@ -22,6 +22,9 @@ import com.court_booking_project.court_booking_server.utils.momo.CreateSignature
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.query.Param;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -45,7 +48,7 @@ public class ReservationServiceImpl implements IReservationService {
 
     @Override
     public ReservationResponse get(String id) {
-        return reservationRepository.findById(id).map(reservationMapper::convertEntityToResponse).orElseThrow(() -> new RuntimeException("reservation not found"));
+        return reservationRepository.findById(id).map(reservationMapper::convertEntityToResponse).orElseThrow(() -> new AppException(ErrorCode.NOT_FOUND_RESERVATION_ID));
     }
 
     @Override
@@ -65,6 +68,14 @@ public class ReservationServiceImpl implements IReservationService {
             throw new AppException(ErrorCode.UNAUTHENTICATED);
 
         return reservationRepository.findByUserOrderByCreatedAt(user.get()).stream().map(reservationMapper::convertEntityToResponse).toList();
+    }
+
+    @Override
+    public Page<ReservationResponse> findFilteredReservations(String search, Date fromDate, Date toDate, Pageable pageable) {
+
+        Page<Reservation> reservationPage =  reservationRepository.findFilteredReservations(search, fromDate, toDate, pageable);
+
+        return reservationPage.map(reservationMapper::convertEntityToResponse);
     }
 
     @Override
@@ -89,14 +100,18 @@ public class ReservationServiceImpl implements IReservationService {
 
     @Override
     public ReservationResponse update(String id, UpdateReservationRequest request) {
-        Reservation reservation = reservationRepository.findById(id).orElseThrow(() -> new RuntimeException("reservation not found"));
-        reservationMapper.convertUpdateDTOtoEntity(reservation,request);
-        reservationRepository.save(reservation);
-        return reservationMapper.convertEntityToResponse(reservation);
+        Reservation reservation = reservationRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.NOT_FOUND_RESERVATION_ID));
+        try {
+            reservationMapper.convertUpdateDTOtoEntity(reservation, request);
+            reservationRepository.save(reservation);
+            return reservationMapper.convertEntityToResponse(reservation);
+        } catch (Exception e) {
+            throw new AppException(ErrorCode.NOT_FOUND_PAYMENT_METHOD);
+        }
     }
 
     public MomoCreatePaymentDTO createPaymentMomo (String id, MomoRequestCreatePaymentDTO request) {
-        Reservation reservation = reservationRepository.findById(id).orElseThrow(() -> new RuntimeException("Reservation not found"));
+        Reservation reservation = reservationRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.NOT_FOUND_RESERVATION_ID));
         try {
             return momoService.createPayment(reservation, request);
         } catch (Exception ex) {

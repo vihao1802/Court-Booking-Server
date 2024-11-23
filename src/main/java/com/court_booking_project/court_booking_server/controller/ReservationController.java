@@ -14,12 +14,15 @@ import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.apache.coyote.Response;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.court_booking_project.court_booking_server.service.implementations.ReservationServiceImpl;
 
+import java.util.Date;
 import java.util.List;
 
 
@@ -71,7 +74,7 @@ public class ReservationController {
 
     @PostMapping("/{id}/payment/zalo-pay")
     public ResponseEntity<?> createPaymentZaloPay( @PathVariable String id) throws Exception {
-        return ResponseEntity.status(HttpStatus.OK).body(zalPayService.createPaymentZaloPay(id));
+        return zalPayService.createPaymentZaloPay(id);
     }
 
     @PostMapping("/{id}/zalo-pay/callback")
