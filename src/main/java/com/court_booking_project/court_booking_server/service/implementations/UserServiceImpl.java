@@ -162,7 +162,7 @@ public class UserServiceImpl implements IUserService {
 
     public Integer getTotalNewUser(Date startDate, Date endDate) {
         return userRepository.getTotalNewUser(startDate, endDate);
-
+    }
     public UserResponse disableUser(String id, DisableUserRequest isDisable) {
         var user = userRepository.findById(id);
 

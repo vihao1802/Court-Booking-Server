@@ -81,7 +81,7 @@ public class UserController {
     public ResponseEntity<?> updatePassword(@RequestBody @Valid UpdatePasswordRequest updateUserRequest) {
         userService.updatePassword(updateUserRequest);
         return ResponseEntity.noContent().build();
-
+    }
     @PutMapping ("/users/{id}/disable-user")
     public ResponseEntity<UserResponse> disableUser(@PathVariable String id, @RequestBody DisableUserRequest disableUserRequest) {
         return  new ResponseEntity<UserResponse>(userService.disableUser(id, disableUserRequest),HttpStatus.OK);

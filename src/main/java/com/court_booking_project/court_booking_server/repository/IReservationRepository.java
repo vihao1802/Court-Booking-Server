@@ -24,9 +24,12 @@ import java.util.List;
 @Repository
 public interface IReservationRepository extends JpaRepository<Reservation, String> {
     List<Reservation> findByUserOrderByCreatedAt(User user);
+    List<Reservation> findByReservationDateBetween(LocalDate start, LocalDate end);
 
-
-    @Query("SELECT SUM(TIMESTAMPDIFF(HOUR, r.checkInTime, r.checkOutTime))  FROM Reservation r WHERE r.reservationState = 1 AND r.createdAt BETWEEN :startDate AND :endDate")
+    @Query(value = "SELECT SUM(TIMESTAMPDIFF(HOUR, r.check_in_time, r.check_out_time)) " +
+            "FROM reservations r " +
+            "WHERE r.reservation_state = 1 AND r.created_at BETWEEN :startDate AND :endDate",
+            nativeQuery = true)
     Integer getTotalBookingHours(@Param("startDate") Date startDate, @Param("endDate") Date endDate);
 
     @Query("SELECT SUM(r.totalPrice) FROM Reservation r WHERE r.reservationState = 1 AND r.createdAt BETWEEN :startDate AND :endDate")
@@ -41,9 +44,6 @@ public interface IReservationRepository extends JpaRepository<Reservation, Strin
             "WHERE r.reservation_state = 1 AND r.created_at BETWEEN :startDate AND :endDate " +
             "GROUP BY YEAR(r.created_at), MONTH(r.created_at)", nativeQuery = true)
     List<Object[]> getRevenueByMonths(@Param("startDate") Date startDate, @Param("endDate") Date endDate);
-
-
-    List<Reservation> findByReservationDateBetween(LocalDate start, LocalDate end);
 
     @Query("SELECT r FROM Reservation r WHERE r.reservationDate = :date AND r.court.id = :courtId AND r.reservationState IN :states")
     List<Reservation> findByReservationDateAndCourtIdAndReservationStates(
