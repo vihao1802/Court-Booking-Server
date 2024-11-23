@@ -29,7 +29,7 @@ public class ReservationResponse {
     String reservationDate;
     ReservationState reservationState;
     String paymentMethod;
-    CourtResponse court;
+
     UserResponse user;
     LocalDateTime createdAt;
 
