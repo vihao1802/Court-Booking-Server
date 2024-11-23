@@ -1,5 +1,6 @@
 package com.court_booking_project.court_booking_server.dto.response.authentication;
 
+import com.court_booking_project.court_booking_server.dto.response.role.RoleResponse;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -19,4 +20,5 @@ public class UserResponse {
     Date dayOfBirth;
     Date createdAt;
     String location;
+    RoleResponse role;
 }
