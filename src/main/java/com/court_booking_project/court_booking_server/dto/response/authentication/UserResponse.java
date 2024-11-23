@@ -19,6 +19,7 @@ public class UserResponse {
     String profileImage;
     Date dayOfBirth;
     Date createdAt;
+    boolean gender;
     String location;
     RoleResponse role;
 }

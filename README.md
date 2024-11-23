@@ -28,6 +28,38 @@
 
 ## 🎉 Tech Stack
 
+### Frontend
+
+- React.js: A JavaScript library for building user interfaces.
+- Next.js: A React-based framework for server-side rendering and static website generation.
+- Material UI: A React component library that implements Google's Material Design for a polished and responsive UI.
+- TypeScript: Ensures type safety and improved development workflow.
+- Tailwind CSS: A utility-first CSS framework for styling.
+
+### Backend
+
+- Spring Boot: A Java framework for building scalable backend applications with minimal configuration.
+- Java 17: The runtime environment for backend processing.
+- JWT (JSON Web Tokens): Secure authentication mechanism for users.
+- Maven: Dependency management and build tool for Java applications.
+
+### Database
+
+- MySQL: A relational database system used to manage booking and user data.
+
+### Payment Integration
+
+- ZaloPay & MoMo: Popular QR code-based payment gateways in Vietnam for seamless online payment functionality.
+
+### Others
+
+- Node.js (v22+): Backend runtime environment for the development and execution of the frontend.
+- npm: Package manager to handle JavaScript libraries and dependencies.
+
+### APIs
+
+- RESTful APIs are used to handle interactions between the frontend and backend, ensuring scalability and performance.
+
 <!-- GETTING STARTED -->
 
 ## 🎯 Getting Started
@@ -35,6 +67,7 @@
 - You can view this frontend website repo at: <a href="https://github.com/vihao1802/Court-Booking-Client" target="_blank">Court Booking Client</a>
 
 ### 💎 Prerequisites
+
 - You should create a `main` directory to wrap 2 repo (client and server) of this system
 - <a href="http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html" target="_blank">JDK >= 17</a>
 - <a href="https://maven.apache.org/" target="_blank">Maven 3.0.0</a>
@@ -48,19 +81,23 @@
 ```sh
 git clone https://github.com/vihao1802/Court-Booking-Client.git
 ```
+
 ```sh
 git clone https://github.com/vihao1802/Court-Booking-Server.git
 ```
 
 2. Install libraries and dependencies (For client folder):
+
 ```
 cd client
 ```
+
 ```
 npm install
 ```
 
 3. Create file `.env.local` in folder `client`:
+
 ```env
 NEXT_PUBLIC_BACKEND_URL=http://localhost:8080/api/v1
 ```
@@ -114,7 +151,7 @@ npm run dev
 
 - This project exists thanks to all the people who contribute.
 <a href="https://github.com/vihao1802/Court-Booking-Server/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=vihao1802/Court-Booking-Server" />
+<img src="https://contrib.rocks/image?repo=vihao1802/Court-Booking-Server" />
 </a>
 
 Made with [contrib.rocks](https://contrib.rocks).
