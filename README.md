@@ -64,7 +64,7 @@
 
 ## 🎯 Getting Started
 
-- You can view this frontend website repo at: <a href="https://github.com/vihao1802/Court-Booking-Client" target="_blank">Court Booking Client</a>
+- You can view this website frontend repo at: <a href="https://github.com/vihao1802/Court-Booking-Client" target="_blank">Court Booking Client</a>
 
 ### 💎 Prerequisites
 
