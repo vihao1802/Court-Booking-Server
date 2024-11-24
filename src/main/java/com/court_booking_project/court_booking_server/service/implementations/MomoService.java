@@ -37,7 +37,8 @@ public class MomoService {
                 // get current milliseconds
                 String orderId = System.currentTimeMillis() + "_" + reservation.getId();
                 String notifyUrl = momoSettings.getNotifyUrl().replace("{{id}}", String.valueOf(reservation.getId()));
-
+                String returnUrl = momoSettings.getReturnUrl().replace("{{id}}", String.valueOf(reservation.getId()));
+                System.out.println(returnUrl);
                 // Create extraData
                 String extraData = Base64.getEncoder().encodeToString(objectMapper.writeValueAsBytes(new ExtraData(reservation.getId())));
 
@@ -51,7 +52,7 @@ public class MomoService {
                                 orderId,
                                 reservationInfo,
                                 momoSettings.getPartnerCode(),
-                                momoSettings.getReturnUrl(),
+                                returnUrl,
                                 requestId,
                                 request.getRequestType());
 
@@ -65,7 +66,7 @@ public class MomoService {
                                 reservation.getTotalPrice(),
                                 orderId,
                                 reservationInfo,
-                                momoSettings.getReturnUrl(),
+                                returnUrl,
                                 notifyUrl,
                                 "vi",
                                 15,

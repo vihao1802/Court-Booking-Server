@@ -56,13 +56,13 @@ public class AuthenticationServiceImpl implements IAuthenticationService {
     public AuthenticationResponse login(LoginRequestDto loginRequestDto) {
         var user = userRepository.findByEmail(loginRequestDto.getEmail());
         if(user.isEmpty())
-            throw new AppException(ErrorCode.USER_NOT_EXISTED);
-        PasswordEncoder passwordEncoder=new BCryptPasswordEncoder(10);
+            throw new AppException(ErrorCode.WRONG_AUTHENTICATION_INFO);
 
+        PasswordEncoder passwordEncoder=new BCryptPasswordEncoder(10);
         boolean verifyPassword = passwordEncoder.matches(loginRequestDto.getPassword(),user.get().getPassword());
 
         if(!verifyPassword)
-            throw new AppException(ErrorCode.INVALID_PASSWORD);
+            throw new AppException(ErrorCode.WRONG_AUTHENTICATION_INFO);
 
         var token = generateToken(user.get());
 

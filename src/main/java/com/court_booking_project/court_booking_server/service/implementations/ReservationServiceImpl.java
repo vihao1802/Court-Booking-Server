@@ -5,6 +5,7 @@ import com.court_booking_project.court_booking_server.constant.ReservationState;
 import com.court_booking_project.court_booking_server.dto.request.reservation.CreateReservationRequest;
 import com.court_booking_project.court_booking_server.dto.request.reservation.UpdateReservationRequest;
 import com.court_booking_project.court_booking_server.dto.response.reservation.ReservationResponse;
+import com.court_booking_project.court_booking_server.dto.response.statistic.RevenueByMonthResponse;
 import com.court_booking_project.court_booking_server.entity.Reservation;
 import com.court_booking_project.court_booking_server.exception.AppException;
 import com.court_booking_project.court_booking_server.exception.ErrorCode;
@@ -28,16 +29,20 @@ import com.itextpdf.layout.element.Paragraph;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.query.Param;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.io.ByteArrayOutputStream;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -168,6 +173,35 @@ public class ReservationServiceImpl implements IReservationService {
             System.out.println("Signature mismatch or unsuccessful result code.");
         }
     }
+
+    public Integer getTotalBookingHours(Date startDate, Date endDate) {
+        return reservationRepository.getTotalBookingHours(startDate, endDate);
+    }
+
+    @Override
+    public Integer getTotalRevenue(Date startDate, Date endDate) {
+        return reservationRepository.getTotalProfit(startDate, endDate);
+    }
+
+    @Override
+    public List<RevenueByMonthResponse> getRevenueByMonths(Date startDate, Date endDate) {
+//        return reservationRepository.getRevenueByMonths(startDate, endDate);
+        List<Object[]> results = reservationRepository.getRevenueByMonths(startDate, endDate);
+        return results.stream()
+                .map(row -> RevenueByMonthResponse.builder()
+                        .month((Integer) row[0])
+                        .year((Integer) row[1])
+                        .revenue((BigDecimal) row[2])
+                        .bookingHours((BigDecimal) row[3])
+                        .build())
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ReservationResponse> getLatestReservation(int limit) {
+        return reservationRepository.findAllByOrderByCreatedAtDesc(PageRequest.of(0, limit)).stream().map(reservationMapper::convertEntityToResponse).toList();
+    }
+
 
     public byte[] generateInvoice(String id) {
         Reservation reservation = reservationRepository.findById(id).orElse(null);

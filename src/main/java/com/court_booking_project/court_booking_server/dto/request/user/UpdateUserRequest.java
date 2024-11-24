@@ -17,7 +17,7 @@ import java.time.LocalDate;
 public class UpdateUserRequest {
     @NotNull(message="INVALID_USERNAME")
     @NotEmpty(message="INVALID_USERNAME")
-    String username;
+    String userName;
 
     @NotNull(message="INVALID_PHONE_NUMBER")
     @NotEmpty(message="INVALID_PHONE_NUMBER")
@@ -30,4 +30,7 @@ public class UpdateUserRequest {
 
     @NotNull(message="INVALID_LOCATION")
     String location;
+
+    @NotNull
+    Boolean gender;
 }

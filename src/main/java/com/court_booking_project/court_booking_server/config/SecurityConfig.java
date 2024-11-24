@@ -20,6 +20,7 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 @EnableMethodSecurity
 public class SecurityConfig  {
+
     private final String[] PUBLIC_ENDPOINTS_POST_METHOD = {
             "api/v1/auth/login",
             "api/v1/auth/introspect",
@@ -32,6 +33,7 @@ public class SecurityConfig  {
     private final String[] PUBLIC_ENDPOINTS_GET_METHOD = {
             "api/v1/court-types/**",
             "api/v1/courts/**",
+
     };
 
     @Autowired
