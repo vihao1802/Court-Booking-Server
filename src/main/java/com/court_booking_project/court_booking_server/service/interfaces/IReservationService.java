@@ -27,6 +27,7 @@ public interface IReservationService {
     MomoCreatePaymentDTO createPaymentMomo (String id, MomoRequestCreatePaymentDTO request);
     void handleMomoCallBack(String id, MomoCallbackDTO callbackDto);
     Integer getTotalBookingHours(Date startDate, Date endDate);
-    Integer getTotalProfit(Date startDate, Date endDate);
+    Integer getTotalRevenue(Date startDate, Date endDate);
     List<RevenueByMonthResponse> getRevenueByMonths(Date startDate, Date endDate);
+    List<ReservationResponse> getLatestReservation(int limit);
 }

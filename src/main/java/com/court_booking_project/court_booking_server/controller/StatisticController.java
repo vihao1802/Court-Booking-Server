@@ -36,13 +36,13 @@ public class StatisticController {
         return ResponseEntity.status(HttpStatus.OK).body(apiResponse);
     }
 
-    @GetMapping("/total-profit")
-    public ResponseEntity<ApiResponse<?>> getTotalProfit(@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
+    @GetMapping("/total-revenue")
+    public ResponseEntity<ApiResponse<?>> getTotalRevenue(@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
                                                             @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate) {
-        Integer totalProfit = reservationService.getTotalProfit(startDate, endDate);
+        Integer totalRevenue = reservationService.getTotalRevenue(startDate, endDate);
 
         ApiResponse<?> apiResponse = ApiResponse.builder()
-                .result(totalProfit == null ? 0 : totalProfit)
+                .result(totalRevenue == null ? 0 : totalRevenue)
                 .build();
         return ResponseEntity.status(HttpStatus.OK).body(apiResponse);
     }

@@ -25,6 +25,7 @@ import java.util.List;
 public interface IReservationRepository extends JpaRepository<Reservation, String> {
     List<Reservation> findByUserOrderByCreatedAt(User user);
     List<Reservation> findByReservationDateBetween(LocalDate start, LocalDate end);
+    List<Reservation> findAllByOrderByCreatedAtDesc(Pageable pageable);
 
     @Query(value = "SELECT SUM(TIMESTAMPDIFF(HOUR, r.check_in_time, r.check_out_time)) " +
             "FROM reservations r " +
@@ -32,7 +33,10 @@ public interface IReservationRepository extends JpaRepository<Reservation, Strin
             nativeQuery = true)
     Integer getTotalBookingHours(@Param("startDate") Date startDate, @Param("endDate") Date endDate);
 
-    @Query("SELECT SUM(r.totalPrice) FROM Reservation r WHERE r.reservationState = 1 AND r.createdAt BETWEEN :startDate AND :endDate")
+    @Query(value = "SELECT SUM(r.total_price)" +
+            "FROM reservations r " +
+            "WHERE r.reservation_state = 1 AND r.created_at BETWEEN :startDate AND :endDate",
+    nativeQuery = true)
     Integer getTotalProfit(@Param("startDate") Date startDate, @Param("endDate") Date endDate);
 
     @Query(value = "SELECT " +
@@ -42,7 +46,8 @@ public interface IReservationRepository extends JpaRepository<Reservation, Strin
             "SUM(TIMESTAMPDIFF(HOUR, r.check_in_time, r.check_out_time)) AS totalHours " +
             "FROM reservations r " +
             "WHERE r.reservation_state = 1 AND r.created_at BETWEEN :startDate AND :endDate " +
-            "GROUP BY YEAR(r.created_at), MONTH(r.created_at)", nativeQuery = true)
+            "GROUP BY YEAR(r.created_at) , MONTH(r.created_at)" +
+            "ORDER BY year ASC, month ASC;", nativeQuery = true)
     List<Object[]> getRevenueByMonths(@Param("startDate") Date startDate, @Param("endDate") Date endDate);
 
     @Query("SELECT r FROM Reservation r WHERE r.reservationDate = :date AND r.court.id = :courtId AND r.reservationState IN :states")
@@ -64,6 +69,7 @@ public interface IReservationRepository extends JpaRepository<Reservation, Strin
             @Param("toDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date toDate,
             Pageable pageable
     );
+
 
     @Modifying
     @Transactional
