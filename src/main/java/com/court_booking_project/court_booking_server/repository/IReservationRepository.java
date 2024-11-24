@@ -39,8 +39,8 @@ public interface IReservationRepository extends JpaRepository<Reservation, Strin
             "AND (:toDate IS NULL OR r.reservationDate <= :toDate)")
     Page<Reservation> findFilteredReservations(
             @Param("search") String search,
-            @Param("fromDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date fromDate,
-            @Param("toDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date toDate,
+            @Param("fromDate") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate fromDate,
+            @Param("toDate") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate toDate,
             Pageable pageable
     );
 
@@ -49,6 +49,6 @@ public interface IReservationRepository extends JpaRepository<Reservation, Strin
     @Query("UPDATE Reservation r " +
             "SET r.reservationState = 2 " +
             "WHERE r.reservationState = 0 " +
-            "AND CONCAT(r.reservationDate, ' ', CONCAT(r.checkOutTime, ':00:00')) >= :currentTime")
+            "AND CONCAT(r.reservationDate, ' ', CONCAT(r.checkOutTime, ':00:00')) < :currentTime")
     void updateExpiredReservations(@Param("currentTime") String currentTime);
 }
