@@ -44,7 +44,6 @@ public class ReservationController {
         return reservationService.get(id);
     }
 
-    @PostMapping
     @GetMapping("/my-reservations")
     public ResponseEntity<List<ReservationResponse>> getMyReservations() {
         return  new ResponseEntity<>(reservationService.getMyReservations(), HttpStatus.OK);
@@ -54,6 +53,7 @@ public class ReservationController {
         return  new ResponseEntity<>(reservationService.getLatestReservation(limit), HttpStatus.OK);
     }
     @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping
     public ReservationResponse addCourt(@RequestBody @Valid CreateReservationRequest request) {
         return reservationService.add(request);
     }
