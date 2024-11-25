@@ -26,6 +26,8 @@ public class CourtResponse {
     long rentalPricePerHour;
     int minimumRentalTime;
     int maximumRentalTime;
+    int isDeleted;
+
     CourtTypeResponse courtType;
     List<CourtImageResponse> courtImageList;
 }

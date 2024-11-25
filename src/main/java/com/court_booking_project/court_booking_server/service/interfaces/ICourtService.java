@@ -8,6 +8,8 @@ import com.court_booking_project.court_booking_server.dto.response.court.CourtRe
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,4 +22,6 @@ public interface ICourtService {
     List<String> getAvailableDate(String id);
     CourtResponse creatCourtImageList(String id, CreateCourtImageRequest requests);
     List<String> getUnavailableHours(String id, String date);
+    Page<CourtResponse> getAvailableCourtsByTypeAndDateTime(String typeId, LocalDate date, int start, int end, Pageable pageable);
+    CourtResponse deleteCourt(String id);
 }

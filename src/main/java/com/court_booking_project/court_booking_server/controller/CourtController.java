@@ -3,7 +3,6 @@ package com.court_booking_project.court_booking_server.controller;
 import com.court_booking_project.court_booking_server.dto.request.court.CreateCourtRequest;
 import com.court_booking_project.court_booking_server.dto.request.court.UpdateCourtRequest;
 import com.court_booking_project.court_booking_server.dto.request.court_image.CreateCourtImageRequest;
-import com.court_booking_project.court_booking_server.dto.request.court_image.UpdateCourtImageRequest;
 import com.court_booking_project.court_booking_server.dto.response.court.CourtResponse;
 import com.court_booking_project.court_booking_server.service.interfaces.ICourtService;
 import jakarta.validation.Valid;
@@ -14,9 +13,11 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -51,6 +52,17 @@ public class CourtController {
         return courtService.getUnavailableHours(id,date);
     }
 
+    @GetMapping("/type/{typeId}/search")
+    public Page<CourtResponse> getAvailableCourtsByTypeAndDateTime(@PathVariable String typeId,
+                                                                   @RequestParam("date") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date,
+                                                                   @RequestParam("start") String startTime,
+                                                                   @RequestParam("end") String endTime,
+                                                                   Pageable pageable) {
+        int start = Integer.parseInt(startTime);
+        int end = Integer.parseInt(endTime);
+        return courtService.getAvailableCourtsByTypeAndDateTime(typeId, date, start, end, pageable);
+    }
+
     @PostMapping
     public CourtResponse addCourt(@RequestBody @Valid CreateCourtRequest request) {
 
@@ -66,5 +78,10 @@ public class CourtController {
     @PutMapping("/{id}")
     public CourtResponse updateCourt(@PathVariable String id,@RequestBody @Valid UpdateCourtRequest request) {
         return courtService.update(id, request);
+    }
+
+    @PutMapping("/{id}/delete")
+    public CourtResponse deleteCourt(@PathVariable String id) {
+        return courtService.deleteCourt(id);
     }
 }
