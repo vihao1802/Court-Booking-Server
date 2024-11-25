@@ -39,6 +39,9 @@ public class Court {
     @Column(name = "maximum_rental_time", nullable = false)
     int maximumRentalTime;
 
+    @Column(name = "is_deleted", nullable = false)
+    int isDeleted;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name= "court_type_id",referencedColumnName = "id", nullable = false)
     CourtType courtType;

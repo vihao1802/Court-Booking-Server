@@ -14,18 +14,24 @@ import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.http.HttpHeaders;
 import com.court_booking_project.court_booking_server.service.implementations.ReservationServiceImpl;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("${spring.application.api-prefix}/reservations")
@@ -52,6 +58,20 @@ public class ReservationController {
     public ResponseEntity<List<ReservationResponse>> getLatestReservations(@RequestParam int limit) {
         return  new ResponseEntity<>(reservationService.getLatestReservation(limit), HttpStatus.OK);
     }
+
+    @GetMapping("/paginated")
+    public Page<ReservationResponse> getReservations(
+            @RequestParam(name="search",required = false) String search,
+            @RequestParam(name="from",required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate fromDate,
+            @RequestParam(name="to",required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate toDate,
+            Pageable pageable
+    ) {
+
+        return reservationService.findFilteredReservations(search, fromDate, toDate, pageable);
+    }
+
+
+    @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public ReservationResponse addCourt(@RequestBody @Valid CreateReservationRequest request) {
@@ -84,5 +104,19 @@ public class ReservationController {
     @PostMapping("/{id}/zalo-pay/callback")
     public String handleZaloCallback( @PathVariable String id,@RequestBody ZaloPayCallBackDTO jsonString) throws Exception {
         return zalPayService.handleZaloCallback(id,jsonString);  // Correct: Instance call
+    }
+
+    @GetMapping("/{id}/getInvoice")
+    public ResponseEntity<byte[]> getInvoice(@PathVariable String id) {
+        // Tạo hóa đơn PDF
+        byte[] pdfBytes = reservationService.generateInvoice(id);
+
+        // Trả về PDF
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Disposition", "inline; filename=invoice.pdf");
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .headers(headers)
+                .body(pdfBytes);
     }
 }

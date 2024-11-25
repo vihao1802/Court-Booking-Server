@@ -21,6 +21,11 @@ import com.court_booking_project.court_booking_server.repository.ICourtRepositor
 import com.court_booking_project.court_booking_server.repository.ICourtTypeRepository;
 import com.court_booking_project.court_booking_server.repository.IReservationRepository;
 import com.court_booking_project.court_booking_server.service.interfaces.ICourtService;
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.layout.Document;
+import com.itextpdf.layout.element.Paragraph;
+import com.itextpdf.layout.element.Table;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -31,7 +36,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.ByteArrayOutputStream;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -53,12 +60,12 @@ public class CourtServiceImpl implements ICourtService {
 
     @Override
     public Page<CourtResponse> getCourtsByType(String typeId,Pageable pageable) {
-        return courtRepository.findByCourtTypeId(typeId, pageable).map(courtMapper::convertEntityToDTO);
+        return courtRepository.findByCourtTypeIdAndIsDeletedNot(typeId, 1, pageable).map(courtMapper::convertEntityToDTO);
     }
 
     @Override
     public List<CourtResponse> getAll() {
-        return courtRepository.findAll().stream().map(courtMapper::convertEntityToDTO).toList();
+        return courtRepository.findAll().stream().filter(court -> court.getIsDeleted() != 1).map(courtMapper::convertEntityToDTO).toList();
     }
 
     @Override
@@ -173,6 +180,19 @@ public class CourtServiceImpl implements ICourtService {
 
         return new ArrayList<>(notAvailableHoursSet);
 
+    }
+
+    public Page<CourtResponse> getAvailableCourtsByTypeAndDateTime(String typeId, LocalDate date, int start, int end, Pageable pageable) {
+        Page<Court> availableCourts = courtRepository.getAvailableCourtsByTypeAndDateTime(typeId, date, start, end, pageable);
+
+        return availableCourts.map(courtMapper::convertEntityToDTO);
+    }
+
+    public CourtResponse deleteCourt(String id) {
+        Court court = courtRepository.findById(id).orElseThrow(() -> new RuntimeException("Court not found"));
+        court.setIsDeleted(1);
+        courtRepository.save(court);
+        return courtMapper.convertEntityToDTO(court);
     }
 
 
