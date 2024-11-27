@@ -2,6 +2,7 @@ package com.court_booking_project.court_booking_server.service.implementations;
 
 import com.court_booking_project.court_booking_server.dto.request.authentication.LogoutRequest;
 import com.court_booking_project.court_booking_server.dto.request.authentication.RefreshTokenRequest;
+import com.court_booking_project.court_booking_server.dto.response.authentication.OTPResponse;
 import com.court_booking_project.court_booking_server.entity.InvalidatedToken;
 import com.court_booking_project.court_booking_server.entity.User;
 import com.court_booking_project.court_booking_server.exception.AppException;
@@ -40,6 +41,7 @@ import com.nimbusds.jwt.*;
 public class AuthenticationServiceImpl implements IAuthenticationService {
     IUserRepository userRepository;
     IInvalidateTokenRepository invalidateTokenRepository;
+    private final MailerService mailerService;
 
     @NonFinal
     @Value("${jwt.secretSigningKey}")
@@ -131,7 +133,8 @@ public class AuthenticationServiceImpl implements IAuthenticationService {
                 .build();
     }
 
-    private String generateToken(User user) {
+    @Override
+    public String generateToken(User user) {
         JWSHeader header = new JWSHeader(JWSAlgorithm.HS256);
 
         JWTClaimsSet claimsSet = new JWTClaimsSet.Builder()

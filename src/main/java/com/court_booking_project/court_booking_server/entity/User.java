@@ -7,7 +7,6 @@ import org.hibernate.annotations.UuidGenerator;
 
 import java.time.LocalDate;
 import java.util.Date;
-import java.util.UUID;
 
 @Data
 @AllArgsConstructor
@@ -32,7 +31,7 @@ public class User {
     @Column(name = "password",nullable = false)
     String password;
 
-    @Column(name = "phone_number",nullable = false)
+    @Column(name = "phone_number")
     String phoneNumber;
 
     @Column(name = "gender")
@@ -53,9 +52,10 @@ public class User {
     @Column(name = "is_disabled",nullable = false)
     int isDisabled = 0;
 
+    @Column(name = "is_changed_password")
+    Boolean isChangedPassword = true;
+
     @ManyToOne
     @JoinColumn(name = "roleId", referencedColumnName = "id", nullable = false)
     Role role;
-
-
 }

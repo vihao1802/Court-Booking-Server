@@ -7,6 +7,9 @@ import com.court_booking_project.court_booking_server.dto.request.authentication
 import com.court_booking_project.court_booking_server.dto.request.authentication.RefreshTokenRequest;
 import com.court_booking_project.court_booking_server.dto.response.authentication.AuthenticationResponse;
 import com.court_booking_project.court_booking_server.dto.response.authentication.IntrospectResponse;
+import com.court_booking_project.court_booking_server.dto.response.authentication.OTPResponse;
+import com.court_booking_project.court_booking_server.dto.response.authentication.UserResponse;
+import com.court_booking_project.court_booking_server.entity.User;
 import com.court_booking_project.court_booking_server.exception.AppException;
 import com.nimbusds.jose.JOSEException;
 
@@ -18,4 +21,5 @@ public interface IAuthenticationService {
     IntrospectResponse introspect(IntrospectRequest introspectRequest) throws JOSEException, ParseException;
     void logout(LogoutRequest logoutRequest);
     AuthenticationResponse refreshToken(RefreshTokenRequest refreshTokenRequest)throws AppException, ParseException, JOSEException;
+    String generateToken(User user);
 }

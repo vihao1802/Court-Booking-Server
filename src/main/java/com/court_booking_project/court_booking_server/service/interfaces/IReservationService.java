@@ -29,4 +29,5 @@ public interface IReservationService {
     Integer getTotalRevenue(Date startDate, Date endDate);
     List<RevenueByMonthResponse> getRevenueByMonths(Date startDate, Date endDate);
     List<ReservationResponse> getLatestReservation(int limit);
+    Page<ReservationResponse> getMyReservationsPage(Pageable pageable);
 }

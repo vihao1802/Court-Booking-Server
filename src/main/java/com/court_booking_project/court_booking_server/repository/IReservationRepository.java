@@ -14,6 +14,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.time.LocalDate;
 import java.util.List;
@@ -23,6 +24,7 @@ public interface IReservationRepository extends JpaRepository<Reservation, Strin
     Page<Reservation> findByUserOrderByCreatedAtDesc(User user, Pageable pageable);
     List<Reservation> findByReservationDateBetween(LocalDate start, LocalDate end);
     List<Reservation> findAllByOrderByCreatedAtDesc(Pageable pageable);
+
 
     @Query(value = "SELECT SUM(TIMESTAMPDIFF(HOUR, r.check_in_time, r.check_out_time)) " +
             "FROM reservations r " +
@@ -75,5 +77,12 @@ public interface IReservationRepository extends JpaRepository<Reservation, Strin
             "WHERE r.reservationState = 0 " +
             "AND CONCAT(r.reservationDate, ' ', CONCAT(r.checkOutTime, ':00:00')) < :currentTime")
     void updateExpiredReservations(@Param("currentTime") String currentTime);
+
+
+    Page<Reservation> findByUserOrderByCreatedAt(
+            User user,
+            Pageable pageable
+    );
+
 
 }

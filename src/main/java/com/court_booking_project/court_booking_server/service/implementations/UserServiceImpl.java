@@ -25,9 +25,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -58,6 +56,7 @@ public class UserServiceImpl implements IUserService {
         user.setCreatedAt(Date.from(java.time.Instant.now()));
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setProfileImage(InitialResources.getRandomUrl());
+        user.setIsChangedPassword(true);
         Role userRole = roleServiceImpl.getByName(PredefineRole.USER_ROLE);
         user.setRole(userRole);
 
@@ -101,10 +100,7 @@ public class UserServiceImpl implements IUserService {
     @Override
     public UserResponse findByEmail(String email) {
         var user = userRepository.findByEmail(email);
-        if(user.isEmpty())
-            throw new AppException(ErrorCode.USER_NOT_EXISTED);
-
-        return userMapper.toUserResponse(user.get()) ;
+        return user.map(userMapper::toUserResponse).orElse(null);
     }
 
 
@@ -144,10 +140,13 @@ public class UserServiceImpl implements IUserService {
 
         if(user.isEmpty()) throw new AppException(ErrorCode.USER_NOT_EXISTED);
 
-        if(!passwordEncoder.matches(updatePasswordRequest.getOldPassword(), user.get().getPassword()))
-            throw new AppException(ErrorCode.WRONG_PASSWORD);
 
-        user.get().setPassword(passwordEncoder.encode(updatePasswordRequest.getNewPassword()));
+        if(user.get().getIsChangedPassword()){
+            if(!passwordEncoder.matches(updatePasswordRequest.getOldPassword(), user.get().getPassword()))
+                throw new AppException(ErrorCode.WRONG_PASSWORD);
+        }
+            user.get().setPassword(passwordEncoder.encode(updatePasswordRequest.getNewPassword()));
+            user.get().setIsChangedPassword(true);
         try {
             userRepository.save(user.get());
         }catch(DataIntegrityViolationException ex){
