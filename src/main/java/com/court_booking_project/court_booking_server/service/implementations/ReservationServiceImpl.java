@@ -33,12 +33,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.repository.query.Param;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.io.ByteArrayOutputStream;
 import java.time.LocalDate;
 import java.util.Date;
@@ -70,7 +68,7 @@ public class ReservationServiceImpl implements IReservationService {
     }
 
     @Override
-    public List<ReservationResponse> getMyReservations() {
+    public Page<ReservationResponse> getMyReservations(Pageable pageable) {
         var context = SecurityContextHolder.getContext();
 
         String email = context.getAuthentication().getName();
@@ -80,7 +78,7 @@ public class ReservationServiceImpl implements IReservationService {
         if  (user.isEmpty())
             throw new AppException(ErrorCode.UNAUTHENTICATED);
 
-        return reservationRepository.findByUserOrderByCreatedAt(user.get()).stream().map(reservationMapper::convertEntityToResponse).toList();
+        return reservationRepository.findByUserOrderByCreatedAtDesc(user.get(),pageable).map(reservationMapper::convertEntityToResponse);
     }
 
     @Override

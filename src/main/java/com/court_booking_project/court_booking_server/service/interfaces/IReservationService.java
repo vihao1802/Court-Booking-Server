@@ -9,10 +9,8 @@ import com.court_booking_project.court_booking_server.dto.response.reservation.R
 
 import com.court_booking_project.court_booking_server.dto.response.statistic.RevenueByMonthResponse;
 
-import com.court_booking_project.court_booking_server.entity.Reservation;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDate;
 import java.util.Date;
@@ -21,7 +19,7 @@ import java.util.List;
 public interface IReservationService {
     ReservationResponse get(String id);
     List<ReservationResponse> getAll();
-    List<ReservationResponse> getMyReservations();
+    Page<ReservationResponse> getMyReservations(Pageable pageable);
     Page<ReservationResponse> findFilteredReservations(String search, LocalDate fromDate, LocalDate toDate, Pageable pageable);
     ReservationResponse add(CreateReservationRequest request);
     ReservationResponse update(String id,UpdateReservationRequest request);
