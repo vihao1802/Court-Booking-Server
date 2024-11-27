@@ -1,6 +1,7 @@
 package com.court_booking_project.court_booking_server.service.implementations;
 
 import com.court_booking_project.court_booking_server.config.MomoSettings;
+import com.court_booking_project.court_booking_server.constant.PaymentMethod;
 import com.court_booking_project.court_booking_server.dto.request.momo.ExtraData;
 import com.court_booking_project.court_booking_server.dto.request.momo.MomoCreatePaymentDTO;
 import com.court_booking_project.court_booking_server.dto.request.momo.MomoRequestCreatePaymentDTO;
@@ -32,6 +33,7 @@ public class MomoService {
 
         public MomoCreatePaymentDTO createPayment(Reservation reservation, MomoRequestCreatePaymentDTO request) throws Exception {
 
+                reservation.setPaymentMethod(PaymentMethod.MOMO);
                 String reservationInfo = "Payment for the reservation " + reservation.getCreatedAt();
                 String requestId = UUID.randomUUID().toString();
                 // get current milliseconds

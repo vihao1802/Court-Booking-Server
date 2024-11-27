@@ -160,16 +160,17 @@ public class ReservationServiceImpl implements IReservationService {
         }
 
         // Compare the received signature with the expected signature
-        if (callbackDto.getSignature().equals(expectedSignature) && callbackDto.getResultCode() == 0) {
-            // Proceed with processing the payment
-            Reservation reservation = reservationRepository.findById(id).orElse(null);
-            if (reservation != null) {
-                reservation.setReservationState(ReservationState.fromCode(1));
-                reservationRepository.save(reservation); // Save the updated bill
+        Reservation reservation = reservationRepository.findById(id).orElse(null);
+        if (reservation != null) {
+            if (callbackDto.getSignature().equals(expectedSignature) && callbackDto.getResultCode() == 0) {
+                // Proceed with processing the payment
+                reservation.setReservationState(ReservationState.SUCCESS);
+            } else {
+                // Handle signature mismatch or other issues
+                reservation.setReservationState(ReservationState.FAILED);
+                System.out.println("Signature mismatch or unsuccessful result code.");
             }
-        } else {
-            // Handle signature mismatch or other issues
-            System.out.println("Signature mismatch or unsuccessful result code.");
+            reservationRepository.save(reservation); // Save the updated bill
         }
     }
 
