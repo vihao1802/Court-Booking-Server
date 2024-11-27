@@ -54,6 +54,10 @@ public class ReservationController {
     public ResponseEntity<List<ReservationResponse>> getMyReservations() {
         return  new ResponseEntity<>(reservationService.getMyReservations(), HttpStatus.OK);
     }
+    @GetMapping("/my-reservation-page")
+    public Page<ReservationResponse> getReservationsPage(Pageable pageable) {
+        return reservationService.getMyReservationsPage(pageable);
+    }
     @GetMapping("/latest")
     public ResponseEntity<List<ReservationResponse>> getLatestReservations(@RequestParam int limit) {
         return  new ResponseEntity<>(reservationService.getLatestReservation(limit), HttpStatus.OK);

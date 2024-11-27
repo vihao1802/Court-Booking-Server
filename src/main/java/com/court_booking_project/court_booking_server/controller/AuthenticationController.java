@@ -6,6 +6,7 @@ import com.court_booking_project.court_booking_server.dto.request.authentication
 import com.court_booking_project.court_booking_server.dto.request.authentication.RefreshTokenRequest;
 import com.court_booking_project.court_booking_server.dto.response.authentication.AuthenticationResponse;
 import com.court_booking_project.court_booking_server.dto.response.authentication.IntrospectResponse;
+import com.court_booking_project.court_booking_server.dto.response.authentication.OTPResponse;
 import com.court_booking_project.court_booking_server.dto.response.authentication.UserResponse;
 import com.court_booking_project.court_booking_server.service.interfaces.IAuthenticationService;
 import com.nimbusds.jose.JOSEException;
@@ -47,5 +48,5 @@ public class AuthenticationController {
     public ResponseEntity<AuthenticationResponse> refreshToken(@RequestBody RefreshTokenRequest refreshTokenRequest) throws ParseException, JOSEException {
         return new ResponseEntity<>(authenticationService.refreshToken(refreshTokenRequest), HttpStatus.OK);
     }
-    // TODO: implement forgot password and reset password
+
 }
