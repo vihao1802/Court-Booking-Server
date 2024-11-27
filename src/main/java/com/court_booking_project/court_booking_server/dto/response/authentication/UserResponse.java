@@ -22,4 +22,5 @@ public class UserResponse {
     boolean gender;
     String location;
     RoleResponse role;
+    boolean isChangedPassword;
 }

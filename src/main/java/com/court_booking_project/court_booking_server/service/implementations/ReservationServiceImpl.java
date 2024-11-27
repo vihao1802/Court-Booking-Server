@@ -247,4 +247,15 @@ public class ReservationServiceImpl implements IReservationService {
             throw new RuntimeException("Failed to generate invoice", e);
         }
     }
+    @Override
+    public Page<ReservationResponse> getMyReservationsPage(Pageable pageable) {
+        var context = SecurityContextHolder.getContext();
+
+        String email = context.getAuthentication().getName();
+
+        var user = userRepository.findByEmail(email);
+        LocalDate currentDate =  LocalDate.now();
+        Page<Reservation> reservationPage=  reservationRepository.findByUserOrderByCreatedAt(user.get(), pageable );
+        return reservationPage.map(reservationMapper::convertEntityToResponse);
+    }
 }

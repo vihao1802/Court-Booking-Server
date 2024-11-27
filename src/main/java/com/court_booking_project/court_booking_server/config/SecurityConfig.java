@@ -1,5 +1,6 @@
 package com.court_booking_project.court_booking_server.config;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,7 +20,10 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
+@RequiredArgsConstructor
 public class SecurityConfig  {
+
+    private final Oauth2SuccessHandler successHandler;
 
     private final String[] PUBLIC_ENDPOINTS_POST_METHOD = {
             "api/v1/auth/login",
@@ -28,7 +32,10 @@ public class SecurityConfig  {
             "api/v1/auth/logout",
             "api/v1/users/register",
             "api/v1/reservations/*/zalo-pay/callback",
-            "api/v1/reservations/*/momo-callback"
+            "api/v1/reservations/*/momo-callback",
+            "/oauth2/**",
+            "api/v1/forgot-password/*",
+
     };
     private final String[] PUBLIC_ENDPOINTS_GET_METHOD = {
             "api/v1/court-types/**",
@@ -45,12 +52,19 @@ public class SecurityConfig  {
                 .permitAll().requestMatchers(HttpMethod.GET,PUBLIC_ENDPOINTS_GET_METHOD).permitAll()
                 .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
                 .anyRequest()
-                .authenticated());
+                .authenticated()
+        );
+
+        httpSecurity.oauth2Login(oauth2 ->
+                        oauth2.successHandler(successHandler)
+        );
 
         httpSecurity.oauth2ResourceServer(oauth2 -> oauth2.jwt(jwtConfigurer -> jwtConfigurer
                         .decoder(customJwtDecoder)
                         .jwtAuthenticationConverter(jwtAuthenticationConverter()))
-                .authenticationEntryPoint(new JwtAuthenticationEntryPoint()));
+                    .authenticationEntryPoint(new JwtAuthenticationEntryPoint())
+                );
+
         httpSecurity
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(Customizer.withDefaults());
