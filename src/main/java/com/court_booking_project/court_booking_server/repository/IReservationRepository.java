@@ -1,6 +1,5 @@
 package com.court_booking_project.court_booking_server.repository;
 
-import com.court_booking_project.court_booking_server.dto.response.statistic.RevenueByMonthResponse;
 import com.court_booking_project.court_booking_server.constant.ReservationState;
 import com.court_booking_project.court_booking_server.entity.Reservation;
 import com.court_booking_project.court_booking_server.entity.User;
@@ -11,8 +10,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,7 +20,7 @@ import java.util.List;
 
 @Repository
 public interface IReservationRepository extends JpaRepository<Reservation, String> {
-    List<Reservation> findByUserOrderByCreatedAt(User user);
+    Page<Reservation> findByUserOrderByCreatedAtDesc(User user, Pageable pageable);
     List<Reservation> findByReservationDateBetween(LocalDate start, LocalDate end);
     List<Reservation> findAllByOrderByCreatedAtDesc(Pageable pageable);
 
